@@ -1,0 +1,9 @@
+﻿<div ng-controller="editMapController">
+    <ul>
+        <li ng-repeat="map in mapsData">
+            <div ng-repeat="table in map.tables" my-draggable curtable="table">{{table}}</div>
+        </li>
+    </ul>
+    
+    
+</div>

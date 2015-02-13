@@ -7,11 +7,7 @@ var methodOverride = require('method-override');
 var router = express.Router();
 var fs = require('fs');
 var path = require('path');
-
- // pass our application into our routes -- must
-
-//app.use(busboy());
-
+ 
 app.use(bodyParser.json()); // parse application/json
 app.use(bodyParser.json({ type: 'application/vnd.api+json' })); // parse application/vnd.api+json as json
 app.use(bodyParser.urlencoded({ extended: true })); // parse application/x-www-form-urlencoded
@@ -27,10 +23,11 @@ router.use(function(req, res, next) {
   next(); // make sure we go to the next routes and don't stop here
 });
 
-//app.use('/', router);
+app.use('/api', router);
 
 var port = process.env.PORT || 5432;
 app.listen(port, function() {
   console.log("Listening on " + port);
 });
+
 exports = module.exports = app;   // expose app
