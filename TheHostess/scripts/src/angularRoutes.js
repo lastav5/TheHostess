@@ -1,5 +1,6 @@
 ﻿
 var app = angular.module('HostessApp', ['ngRoute', 'thehostess.services', 'hostess.controllers', 'hostess.directives']);
+
 app.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.
     when('/home', {
@@ -8,7 +9,13 @@ app.config(['$routeProvider', function ($routeProvider) {
     }).
     when('/editMap', {
         templateUrl: 'scripts/src/views/editMapView.html',
-        controller: 'editMapController'
+        controller: 'editMapController',
+        resolve: {
+            mapsData: function (mapsFactory) {
+                debugger;
+                return mapsFactory.getMapsData();
+            }
+        }
     }).
     otherwise({
         redirectTo: '/editMap'
