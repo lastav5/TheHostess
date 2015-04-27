@@ -5,4 +5,7 @@
     <ShowAllFiles>false</ShowAllFiles>
     <ReferenceCachePath>C:\Users\Lasta_000\AppData\Local\Temp\04ru2pus_TheHostess_refcache</ReferenceCachePath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Android'">
+    <DebuggerFlavor>RippleNexus</DebuggerFlavor>
+  </PropertyGroup>
 </Project>

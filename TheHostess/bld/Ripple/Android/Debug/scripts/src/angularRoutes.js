@@ -1,5 +1,5 @@
 ﻿
-var app = angular.module('HostessApp', ['ngRoute', 'thehostess.services', 'hostess.controllers', 'hostess.directives']);
+var app = angular.module('HostessApp', ['ngRoute', 'angular-carousel', 'thehostess.services', 'hostess.controllers', 'hostess.directives']);
 
 app.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.
@@ -11,8 +11,7 @@ app.config(['$routeProvider', function ($routeProvider) {
         templateUrl: 'scripts/src/views/editMapView.html',
         controller: 'editMapController',
         resolve: {
-            mapsData: function (mapsFactory) {
-                debugger;
+            mapsData: function (mapsFactory, $rootScope) {
                 return mapsFactory.getMapsData();
             }
         }

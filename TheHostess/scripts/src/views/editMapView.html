@@ -1,9 +1,25 @@
-﻿<div ng-controller="editMapController">
-    <ul>
+﻿<nav style-table mapsdata="mapsData" styledetails="styledetails" carousel-index="carouselIndex" class="navbar navbar-default navbar-inverse">
+    <div class="container-fluid" id="editNavbar">
+        <div class="navbar-header">
+            <button id="bigger" class="navbar-brand editNavbar-item">+</button>
+            <button id="smaller" class="navbar-brand editNavbar-item">-</button>
+            <button id="wider" class="navbar-brand editNavbar-item"><-></button>
+            <button id="taller" class="navbar-brand editNavbar-item">^</button>
+            <button id="clone" class="navbar-brand editNavbar-item">clone</button>
+            <button id="addCircle" class="navbar-brand editNavbar-item">circle</button>
+            <button id="addRect" class="navbar-brand editNavbar-item">rect</button>
+            <button id="remove" class="navbar-brand editNavbar-item">remove</button>
+        </div>
+    </div>
+</nav>
+<div class="angularCarousel">
+    <ul id="ulCarousel" rn-carousel rn-carousel-index="carouselIndex" rn-carousel-locked="carouseldetails.islocked">
         <li ng-repeat="map in mapsData">
-            <div ng-repeat="table in map.tables" my-draggable curtable="table">{{table}}</div>
+            <div ng-repeat="table in map.tables" my-draggable table="table" carouseldetails="carouseldetails" styledetails="styledetails"></div>
         </li>
+        {{carouseldetails.islocked}}
+        
+        {{mapsData[0].tables[0].width}}
     </ul>
-    
-    
+    <div rn-carousel-indicators ng-if="mapsData.length > 1" slides="mapsData" rn-carousel-index="carouselIndex"></div>
 </div>

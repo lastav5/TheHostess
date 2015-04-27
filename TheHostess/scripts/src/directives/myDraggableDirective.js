@@ -2,71 +2,98 @@
     .directive('myDraggable', ['$document',function ($document) {
         return {
             restrict: "A",
-            scope: { table: "=curTable" },
+            scope: { table: "=table", carouseldetails:"=", styledetails:"=" },
             link: function (scope, element, attr) {
 
-                var startX = 0, startY = 0, x = 0, y = 0;
-                //$q.when(scope.table).then(function (table) {
-                //    alert(scope.table);
-                //    x = Number(scope.table.posX);
-                //    y = Number(scope.table.posY);
-                //    element.css({
-                //        top: y + 'px',
-                //        left: x + 'px'
-                //    });
-                //});
-                x = Number(scope.table.posX);
-                y = Number(scope.table.posY);
-                element.css({
-                    top: y + 'px',
-                    left: x + 'px'
-                });
-                //scope.$watch('table', function (newVal) {
-                //    if (newVal)
-                //    {
-                //        alert(scope.table);
-                //        x = Number(scope.table.posX);
-                //        y = Number(scope.table.posY);
-                //        element.css({
-                //            top: y + 'px',
-                //            left: x + 'px'
-                //        });
-                //    }
-                //}, true);
+                var startX = 0, startY = 0, x = 0, y = 0;//x y are percent
                 
+                var ulTop = document.getElementById('ulCarousel').offsetTop;
+                var ulLeft = document.getElementById('ulCarousel').offsetLeft;
+                
+                scope.$watch('table', function (newVal) {//is necessary?
+                    if (newVal)
+                    {
+                        x = Number(scope.table.posX);
+                        y = Number(scope.table.posY);
+                        element.css({
+                            top: y + "%",
+                            left: x + "%",
+                            width: (scope.table.width) * (window.innerWidth) / 100,
+                            height: (scope.table.height) * (window.innerWidth) / 100
+                        });
+                    }
+                }, true);
+                
+                function objToString(obj) {
+                    var str = '';
+                    for (var p in obj) {
+                        if (obj.hasOwnProperty(p)) {
+                            str += p + '::' + obj[p] + '\n';
+                        }
+                    }
+                    return str;
+                }
+                if (scope.table.shape == "circle") {
+                    element.addClass('circleBase');
+                }
                 element.css({
-                    position: 'relative',
-                    border: '1px solid red',
+                    position: 'absolute',
+                    border: '1px solid black',
                     backgroundColor: 'lightgrey',
-                    cursor: 'pointer'
+                    width: (scope.table.width) * (window.innerWidth) / 100,
+                    height: (scope.table.height) * (window.innerWidth) / 100
                 });
 
-                element.on('mousedown', function (event) {
-                    // Prevent default dragging of selected content
+                element.on('touchstart', function (event) {//mousedown
+                    //lock carousel.//make this table the selected table
+                    scope.carouseldetails.islocked = true;
+                    scope.styledetails.selectedTable = scope.table;
+                    scope.$apply();
+                    
                     event.preventDefault();
-                    startX = event.pageX - x;
-                    startY = event.pageY - y;
-                    $document.on('mousemove', mousemove);
-                    $document.on('mouseup', mouseup);
+                    
+                    if (event.originalEvent.targetTouches.length == 1) {
+                        var touch = event.originalEvent.targetTouches[0];
+                        
+                        x = (touch.clientX - ulLeft) * 100 / (window.innerWidth);//we need to go back 2 parents to reach the ul element
+                        y = (touch.clientY - ulTop) * 100 / (window.innerWidth);
+                    }
+                    
+                    $document.on('touchmove', divmove);
+                    $document.on('touchend', release);
                 });
-
-                function mousemove(event) {
-                    y = event.pageY - startY;
-                    x = event.pageX - startX;
-                    attr.x = x;
-                    element.css({
-                        top: y + 'px',
-                        left: x + 'px'
-                    });
+                
+                function divmove(event) {
+                    
+                    if (event.originalEvent.targetTouches.length == 1) {
+                        
+                        event.preventDefault();
+                        
+                        var touch = event.originalEvent.targetTouches[0];
+                        //alert(touch.target.offsetParent.offsetParent.offsetTop);
+                        
+                        x = (touch.clientX - ulLeft) * 100 / (window.innerWidth);
+                        y = (touch.clientY - ulTop) * 100 / (window.innerWidth);
+                        //attr.x = x;
+                        element.css({
+                            top: y+"%",
+                            left: x+"%"
+                        });
+                    }
+                    
                 }
-
-                function mouseup() {
-                    $document.off('mousemove', mousemove);
-                    $document.off('mouseup', mouseup);
-                    //scope.table.posX = x;
-                    //scope.table.posY = y;
+                //change to document.addevent...
+                //check ngdraggable again for solution for absolute/relative
+                function release() {
+                    $document.off('touchmove', divmove);
+                    $document.off('touchend', release);
+                    scope.table.posX = x;
+                    scope.table.posY = y;
+                    scope.carouseldetails.islocked = false;
+                    scope.$apply();
                 }
-
+                
+                
             }
         };
 }]);

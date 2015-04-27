@@ -2,7 +2,7 @@
 
 var pg = require('pg');
 var db = require('../config/database');
-var connectionString = db.url;
+var conString = db.url;
 
 module.exports = function(app) {
 
@@ -13,6 +13,26 @@ process.on('SIGINT', function() {
 
 
 //routes ==================================================
+
+app.post('/api/tables',function(request,response){
+    pg.connect(conString, function(err, client, done) {
+      if(err) {
+        return console.error('error fetching client from pool', err);
+      }
+      console.log(request.params.mapId);//undefined
+      client.query('insert into public.tables ("mapId") values(0)', function(err, result) {//'+request.params.mapId+'
+        //call `done()` to release the client back to the pool 
+        done();
+        
+        if(err) {
+            response.status(500).send('Something broke!');
+          return console.error('error running query', err);
+        }
+        response.json(result.rows);
+        console.log(result.rows);
+      });
+    });
+});
 
 app.get('/api/maps',function(request,response){
     // pg.connect(conString, function(err, client, done) {
@@ -39,6 +59,7 @@ console.log('getting mapsData');
         'tables': [
           {
             'tableId': 0,
+            'shape': 'circle',
             'posX': 10.0,
             'posY': 10.0,
             'width': 10.0,
@@ -62,6 +83,7 @@ console.log('getting mapsData');
           },
           {
             'tableId': 1,
+            'shape': 'rectangle',
             'posX': 20.0,
             'posY': 20.0,
             'width': 20.0,
@@ -80,6 +102,7 @@ console.log('getting mapsData');
         'tables': [
           {
             'tableId': 2,
+            'shape': 'rectangle',
             'posX': 10.0,
             'posY': 10.0,
             'width': 10.0,
@@ -93,10 +116,6 @@ console.log('getting mapsData');
     }
     ];
     response.json(data);
-  });
-
-app.post('/api/tables',function(request,response){
-    
   });
 
 };
