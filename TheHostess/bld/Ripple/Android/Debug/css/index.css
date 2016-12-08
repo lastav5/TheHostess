@@ -26,6 +26,10 @@ and (max-device-width : 40em) {
         background-color:gray;
         height:100%;
     }
+    .modalReservation
+    {
+        font-size:50%;
+    }
 }
 @media only screen 
 and (min-device-width : 40em) {
@@ -36,6 +40,10 @@ and (min-device-width : 40em) {
         background-color:gray;
         height:100%;
         /*padding-top: 70px;*/
+    }
+     .modalReservation
+    {
+        font-size:130%;
     }
 }
 
@@ -52,17 +60,19 @@ and (min-device-width : 40em) {
     font-size:4em;
 }
 .angularCarousel{
-    top:0;
+
     left:0;
     margin:0;
     padding:0;
     width:100vw;
+    position: fixed;
+    bottom: 0;
 }
 .angularCarousel ul{
     border: 1px solid black;
     position:relative;
     width:100vw;
-    height:100vw;
+    height:120vw;
 }
 
 .angularCarousel li{
@@ -73,4 +83,231 @@ and (min-device-width : 40em) {
 
 .circleBase{
     border-radius: 50%;
+}
+
+.modalReservation {
+    direction:rtl;
+     height:80vh;
+}
+
+.reservationDiv
+{
+    height:15vh;
+    font-size:130%;
+    background-color:#E1E9F5;
+    margin-bottom:5px;
+    position:relative;
+}
+
+.rightDiv {
+    float:right;
+}
+
+.close
+{
+    width:10%;
+}
+
+.tableClass
+{
+    height:100%;
+    width:100%;
+   font-size:130%;
+}
+
+.tableClass td{
+    vertical-align:middle;
+}
+.commentsDiv
+{
+    font-size:90%;
+}
+.tableClass tr {
+        padding:2px;
+}
+
+.tableClass td {
+    padding:5px;
+}
+.middleHeader
+{
+    width:83%;
+    text-align:center;
+    font-size:250%;
+}
+
+.alignLeft
+{
+    text-align:left;
+}
+
+.modal-header
+{
+    display:inline-block;
+    width:100%;
+    background-color:#25426E;
+    color:white;
+    font-size:70%;
+    padding:6px;
+}
+
+.nameTr
+{
+    font-size:150%;
+}
+.colorTr
+{
+    background-color:#3865A8;
+    opacity:0.8;
+    color:white;
+}
+.designedDiv {
+    background-color:white;
+    border:3px solid purple;
+    opacity:0.6;
+    border-radius:10px;
+    padding:5px;
+    text-align:center;
+    width:90%;
+}
+
+.phoneDiv
+{
+    width:40%;
+    float:right;
+}
+
+.guestCountDiv
+{
+    width:20%;
+    float:right;
+}
+
+.addReservation
+{
+    font-size:170%;
+    color:black;
+    margin-bottom:2%;
+}
+
+.addReservation :hover
+{
+   text-decoration:none;
+
+}
+
+.addReservationDiv {
+    font-size:110%;
+    margin-top:2%;
+}
+
+.reservationTable {
+    direction:rtl;
+     width:100%;
+     background-color:#999AAA;
+}
+
+.reservationTable td{
+
+ border:1px solid black;
+}
+
+.phoneInput,.nameInput,.hourInput,.guestCounterInput {
+    width:85%;
+    background-color:#999AAA;
+    outline: none;
+    border:none;
+    text-align:center;
+    font-size:150%;
+    color:black;
+}
+
+.commentsInput {
+    width:99%;
+    background-color:#999AAA;
+    outline: none;
+    border:none;
+    text-align:center;
+    font-size:150%;
+    color:black;
+}
+
+.hourTd{
+    width:20%;
+}
+
+.guestCounterTd
+{
+    width:15%;
+}
+.tableTd {
+    width:30%;
+    color:black;
+}
+
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color:    white;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   color:    white;
+   opacity:  1;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color:    white;
+   opacity:  1;
+}
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+   color:    white;
+}
+
+.tableLabel
+{
+    font-size:150%;
+    font-weight:100;
+    margin:2%;
+}
+
+.hourInput
+{
+    padding:2%;
+}
+
+.disabled-class
+{
+    color:gray;
+}
+
+.modalDiv
+{
+    overflow:auto;
+    
+}
+
+.redBorderDiv {
+    border:1px solid red;
+}
+
+.modal-footer
+{
+    padding:5px;
+}
+
+.btnModalClose
+{
+    padding:4px 8px;
+    font-size:10px;
+}
+
+.modal-body
+{
+    padding:5px;
+}
+
+.navbar
+{
+    margin-bottom:0;
+}
+
+.popover {
+    z-index: 999999;
 }

@@ -13,8 +13,8 @@
                 scope.$watch('table', function (newVal) {//is necessary?
                     if (newVal)
                     {
-                        x = Number(scope.table.posX);
-                        y = Number(scope.table.posY);
+                        x = Number(scope.table.posx);
+                        y = Number(scope.table.posy);
                         element.css({
                             top: y + "%",
                             left: x + "%",
@@ -46,6 +46,7 @@
 
                 element.on('touchstart', function (event) {//mousedown
                     //lock carousel.//make this table the selected table
+             
                     scope.carouseldetails.islocked = true;
                     scope.styledetails.selectedTable = scope.table;
                     scope.$apply();
@@ -87,8 +88,8 @@
                 function release() {
                     $document.off('touchmove', divmove);
                     $document.off('touchend', release);
-                    scope.table.posX = x;
-                    scope.table.posY = y;
+                    scope.table.posx = x;
+                    scope.table.posy = y;
                     scope.carouseldetails.islocked = false;
                     scope.$apply();
                 }

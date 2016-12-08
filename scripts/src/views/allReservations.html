@@ -1,0 +1,65 @@
+﻿
+<div id="allReservations" class="modal-content" role="dialog">
+    <div class="modal-header">
+        <div class="rightDiv"><button class="btn btn-primary btnModalClose" type="button" ng-click="cancel()"><span class="glyphicon glyphicon-remove"></span></button></div>
+        <div class="rightDiv middleHeader">הזמנות</div>
+       
+    </div>
+    <div class="modal-body">
+        <div class="modalDiv">
+            <div ng-repeat="reservation in allReservationList" class="reservationDiv" id="reservation{{reservation.reservationid}}">
+                <div style="display:inline-block" ng-class="{'redBorderDiv':reservation.tablenumbers ==''}">
+                    <table class="reservationTable">
+                        <tr>
+                            <td><span class="glyphicon glyphicon-phone-alt"></span><input style="font-size:100%" type="text" class="phoneInput" ng-model="reservation.phone" /></td>
+                            <td><span class="glyphicon glyphicon-eye-open"></span><input style="font-size:100%" class="nameInput" type="text" ng-model="reservation.name" /></td>
+                        </tr>
+                    </table>
+                    <table class="reservationTable">
+                        <tr>
+                            <td class="hourTd">
+                                <div class="input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true">
+                                    <span class="input-group-addon" style="background:none;border:none; padding:0px; margin:0px">
+                                        <span class="glyphicon glyphicon-time"></span>
+                                    </span>
+                                    <input type="text" style="font-size:100%" class="form-control hourInput" ng-model="reservation.starthour">
+                                </div>
+                            </td>
+                            <td class="hourTd">
+                                <div class="input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true">
+                                    <span class="input-group-addon" style="background:none;border:none;padding:0px;margin:0px">
+                                        <span class="glyphicon glyphicon-time"></span>
+                                    </span>
+                                    <input type="text" style="font-size:100%" class="hourInput" ng-model="reservation.endhour">
+                                </div>
+                            </td>
+                            <td class="hourTd">
+                                <div class="input-group" style="width:100%">
+                                    <span> כל היום</span>
+                                    <input type="checkbox" style="margin-right:7%; vertical-align:sub"  ng-true-value="true" ng-model="reservation.alldayres" />
+                                </div>
+                            </td>
+                            <td class="guestCounterTd">
+                                <div class="input-group" style="width:100%">
+                                    <div style="float:right;width:40%;overflow:auto;height:100%"><span style="margin-top:20%" class="glyphicon glyphicon-user"></span> </div>
+                                    <div style="float:right;width:58%"><input style="font-size:100%" type="text" class="guestCounterInput" ng-model="reservation.guestcount" /></div>
+                                </div>
+                            </td>
+                            <td class="tableTd" ng-click="onChangeTableNumber(reservation.reservationid)"><span class="glyphicon glyphicon-unchecked"></span><label style="font-size:100%" class="tableLabel">{{reservation.tablenumbers}}</label></td>
+                        </tr>
+                    </table>
+                    <table class="reservationTable">
+                        <tr>
+                            <td><textarea rows="1" style="font-size:100%" class="commentsInput" ng-model="reservation.notes" /></td>
+
+                        </tr>
+                    </table>
+                </div>
+                <div style="width:100%">&nbsp;</div>
+                
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer"><div style="text-align:center"><span class="glyphicon glyphicon-menu-down" ng-click="resizeModal()"></span></div></div>
+</div>

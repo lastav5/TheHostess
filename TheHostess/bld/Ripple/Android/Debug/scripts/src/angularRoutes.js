@@ -1,5 +1,9 @@
 ﻿
-var app = angular.module('HostessApp', ['ngRoute', 'angular-carousel', 'thehostess.services', 'hostess.controllers', 'hostess.directives']);
+var app = angular.module('HostessApp', ['ngRoute', 'angular-carousel', 'thehostess.services', 'hostess.controllers', 'hostess.directives', 'ui.bootstrap', 'ngAnimate']);
+
+app.run(function ($rootScope) {
+    $rootScope.mapsData = null;
+});
 
 app.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.
@@ -12,11 +16,28 @@ app.config(['$routeProvider', function ($routeProvider) {
         controller: 'editMapController',
         resolve: {
             mapsData: function (mapsFactory, $rootScope) {
-                return mapsFactory.getMapsData();
+                var today = new Date();
+                var date = (today.getDate() < 10 ? '0' : '') + today.getDate() + '/' +
+            ((today.getMonth() + 1) < 10 ? '0' : '') + (today.getMonth() + 1) + '/' + today.getFullYear();
+
+                return mapsFactory.getMapsData(date);
             }
         }
     }).
+     when('/map', {
+            templateUrl: 'scripts/src/views/mapView.html',
+            controller: 'mapController',
+            resolve: {
+                mapsData: function (mapsFactory, $rootScope) {
+                    var today = new Date();
+                    var date = (today.getDate() < 10 ? '0' : '') + today.getDate() + '/' +
+                ((today.getMonth() + 1) < 10 ? '0' : '') + (today.getMonth() + 1) + '/' + today.getFullYear();
+
+                    return mapsFactory.getMapsData(date);
+                }
+            }
+     }).
     otherwise({
-        redirectTo: '/editMap'
+        redirectTo: '/map'
     });
 }]);

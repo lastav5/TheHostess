@@ -3,7 +3,7 @@
         return function ($scope, element) {
 
             //get objects from database and draw entire area
-            //var tables = [{ tableId: '1', tableX: '25', tableY: '25', tableWidth: '50px', tableHeight: '50px' }];
+            //var tables = [{ tableid: '1', tableX: '25', tableY: '25', tableWidth: '50px', tableHeight: '50px' }];
             //var stage = new Kinetic.Stage({
             //    container: 'tablesArea',
             //    width: window.innerWidth,
