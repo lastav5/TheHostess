@@ -23,14 +23,15 @@
                             defer.resolve(mapsData);
                         }, function (error) {
                             defer.reject(error);
-                        });
-                    }, function (error) {
+                    });
+                }, function (error) {
+                    alert("error in factory");
                         defer.reject(error);
                     });
-                
                 return defer.promise;
             }
         };
+
         function splitTableNumbers(tableNumbersString) {
             if (tableNumbersString == "" || tableNumbersString == "0") {
                 return [];
@@ -45,7 +46,7 @@
             angular.forEach(mapsData, function (map) {
                 angular.forEach(map.tables, function (table) {
                     table.reservations = [];
-                })
+                });
             });
             //merge
             angular.forEach(reservationsData, function (res) {

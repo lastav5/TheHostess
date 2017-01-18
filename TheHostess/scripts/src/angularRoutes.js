@@ -3,7 +3,7 @@ var app = angular.module('HostessApp', ['ngRoute', 'angular-carousel', 'thehoste
 var services = angular.module('thehostess.services', ['ngResource']);
 
 app.run(function ($rootScope) {
-    $rootScope.mapsData = null;
+    //$rootScope.mapsData = null;
 });
 
 app.config(['$routeProvider', function ($routeProvider) {

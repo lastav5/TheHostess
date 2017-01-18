@@ -2,7 +2,6 @@
     .controller('reservationController', ['$scope', '$routeParams', 'tableId', '$uibModalInstance', '$rootScope', 'mapIndex',
     function ($scope, $routeParams, tableId, $uibModalInstance, $rootScope, mapIndex) {
      
-       
         $scope.reservationList = [];
         $(document).ready(function () {
             // $('.clockpicker').clockpicker();
@@ -21,13 +20,13 @@
                         reservationList[i].endhour = reservationList[i].endhour.substring(0, reservationList[i].endhour.lastIndexOf(":"));
                 }
             }
-            return reservationList;
+            return reservationList;//take this out. as long as this object is not a primitive there is no need to return
         };
 
         $scope.getAllReservations=function()
         {
             var currentMap = mapIndex;
-            var tableCounter = $rootScope.mapsData[currentMap].tables.length;
+            var tableCounter = $rootScope.mapsData[currentMap].tables.length;//go over all maps - need change
             for (var i = 0; i < tableCounter;i++)
             {
                 if ($rootScope.mapsData[currentMap].tables[i].tableid == tableId) {
@@ -63,7 +62,7 @@
                 $scope.reservationList.push(reservation);
         }
 
-        //$scope.getAllReservations();
+        $scope.getAllReservations();
         $scope.saveReservations = function () {
 
         };

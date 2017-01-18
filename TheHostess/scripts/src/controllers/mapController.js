@@ -15,13 +15,17 @@ angular.module('hostess.controllers')
             ((today.getMonth() + 1) < 10 ? '0' : '') + (today.getMonth() + 1) + '/' + today.getFullYear();
 
         $scope.selectedDate = output;
-
-        $rootScope.mapsData = [];
+        var dateSelected = $scope.selectedDate;
+        $rootScope.mapsData = [{}];
+        
         getAllDataByDate($scope.selectedDate).then(function (data) {
-            alert("initial getdata " + JSON.stringify(data));
             return data;//resolve the promise
         });
-
+        
+        //mapsFactory.getMapsData(dateSelected).then(function (result) {
+        //    $rootScope.mapsData = result;
+        //});
+        getAllDataByDate(dateSelected);
         $('.clockpicker').clockpicker();
 
         $scope.nextWeek = [];
@@ -61,8 +65,9 @@ angular.module('hostess.controllers')
         $scope.onDatePickerChange = function () {
             $scope.showAddReservationDiv = false;
             $scope.selectedDate = $('#datetimepicker').val();
+            //alert("datepickerchange");
             getAllDataByDate($('#datetimepicker').val()).then(function (data) {
-                alert("indatepickerchange" + data);
+                //alert("indatepickerchange" + data);
             });
         };
 
@@ -228,12 +233,12 @@ angular.module('hostess.controllers')
                         hoursOverlapp = $scope.CheckHoursOverlapp($scope.reservation.starthour, $scope.reservation.endhour, table.reservations[j].starthour, table.reservations[j].endhour);
 
                     if (hoursOverlapp == true) {
-                        table.isDisabled = true;
+                        table.isDisabled = true;//might cause problems with triggering digest
                         return true;
                         break;
                     }
                     else {
-                        table.isDisabled = false;
+                        table.isDisabled = false;//might cause problems with triggering digest
                         return false;
                     }
                 }
@@ -368,7 +373,7 @@ angular.module('hostess.controllers')
                 return result;
                 //defer2.resolve(result);
             }, function (error) {
-                alert(error);
+                alert(JSON.stringify(error));
                 //defer2.reject(error);
             });
             //return defer2.promise;//replace with $q.when?
