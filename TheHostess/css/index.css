@@ -311,3 +311,19 @@ and (min-device-width : 40em) {
 .popover {
     z-index: 999999;
 }
+
+.tab {
+  height: 30px;
+  width: 60px;
+  background-color: white;
+  border-color:black;
+  border-width: 1px;
+  border-style: solid solid none solid;
+  text-align:center;
+  float:right;
+}
+
+.tabSelected{
+  background-color: transparent;
+  border-width: 0px;
+}

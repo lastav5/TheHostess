@@ -6,19 +6,19 @@
         $scope.carouseldetails = {};
         $scope.carouseldetails.islocked = false;
 
-        $scope.mapsData = [];
-        $scope.mapsData = mapsFactory.getMapsData("01/01/1999").then(function (result) {
-            $scope.mapsData = result;
-            $scope.styledetails = {};
-            $scope.styledetails.selectedTable = undefined;
-            if (typeof ($scope.mapsData[$scope.carouselIndex - 1].tables) != 'undefined')
-            {
-                if ($scope.mapsData[$scope.carouselIndex - 1].tables[0]) {
-                    $scope.styledetails.selectedTable = $scope.mapsData[$scope.carouselIndex - 1].tables[0];
-                }
-            }
-            //watch carousel index and when changed do line above ^
-        });
+        //$scope.mapsData = [];
+        //mapsFactory.getMapsData("01/01/1999").then(function (result) {
+        //    $scope.mapsData = result;
+        //    $scope.styledetails = {};
+        //    $scope.styledetails.selectedTable = undefined;
+        //    if (typeof ($scope.mapsData[$scope.carouselIndex - 1].tables) != 'undefined')
+        //    {
+        //        if ($scope.mapsData[$scope.carouselIndex - 1].tables[0]) {
+        //            $scope.styledetails.selectedTable = $scope.mapsData[$scope.carouselIndex - 1].tables[0];
+        //        }
+        //    }
+        //    //watch carousel index and when changed do line above ^
+        //});
         
         
     }]);

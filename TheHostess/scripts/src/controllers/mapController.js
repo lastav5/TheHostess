@@ -1,12 +1,13 @@
 ﻿/// <reference path="../views/reservation.html" />
 angular.module('hostess.controllers')
-    .controller('mapController', ['$scope', '$routeParams', 'mapsFactory', '$location', '$uibModal','$rootScope','reservationFactory','$timeout',
-    function ($scope, $routeParams, mapsFactory, $location, $uibModal, $rootScope, reservationFactory, $timeout) {
+    .controller('mapController', ['$scope', '$routeParams', 'mapsFactory', '$location', '$uibModal','$rootScope','reservationFactory','$timeout','$q',
+    function ($scope, $routeParams, mapsFactory, $location, $uibModal, $rootScope, reservationFactory, $timeout, $q) {
 
-        $scope.carouselIndex = 1;
+        $scope.carouselIndex = 0;
         $scope.carouseldetails = {};
         $scope.carouseldetails.islocked = false;
         $scope.showAddReservationDiv = false;
+        $scope.viewStyleSelected = 1;
         $scope.reservation = {};
         $scope.reservation.alldayres = true;
         var today = new Date();
@@ -14,12 +15,15 @@ angular.module('hostess.controllers')
             ((today.getMonth() + 1) < 10 ? '0' : '') + (today.getMonth() + 1) + '/' + today.getFullYear();
 
         $scope.selectedDate = output;
-        $scope.mapsData = [];
-        $scope.mapsData = mapsFactory.getMapsData($scope.selectedDate).then(function (result) {
-            $scope.mapsData = result;
-            $rootScope.mapsData = result;
+
+        $rootScope.mapsData = [];
+        getAllDataByDate($scope.selectedDate).then(function (data) {
+            alert("initial getdata " + JSON.stringify(data));
+            return data;//resolve the promise
         });
+
         $('.clockpicker').clockpicker();
+
         $scope.nextWeek = [];
 
         for (var i = 0; i < 6; i++)
@@ -53,12 +57,12 @@ angular.module('hostess.controllers')
             });
         });
 
+
         $scope.onDatePickerChange = function () {
             $scope.showAddReservationDiv = false;
-            $scope.mapsData = mapsFactory.getMapsData($('#datetimepicker').val()).then(function (result) {
-                $scope.mapsData = result;
-                $rootScope.mapsData = result;
-                $scope.selectedDate = $('#datetimepicker').val();
+            $scope.selectedDate = $('#datetimepicker').val();
+            getAllDataByDate($('#datetimepicker').val()).then(function (data) {
+                alert("indatepickerchange" + data);
             });
         };
 
@@ -73,7 +77,7 @@ angular.module('hostess.controllers')
             $scope.reservation = {};
             $scope.reservation.tablenumbers = "";
             $scope.reservation.alldayres = true;
-            $scope.SetDisablity();
+            //$scope.SetDisablity();//can get rid of this?
         };
 
         $scope.openReservation = function (tableId) {
@@ -105,7 +109,7 @@ angular.module('hostess.controllers')
 
         $scope.CloseReservation = function () {
             $scope.showAddReservationDiv = false;
-            $scope.SetDisablity();
+            //$scope.SetDisablity();//can get rid of this?
         };
 
         $scope.saveReservation = function () {
@@ -206,10 +210,9 @@ angular.module('hostess.controllers')
         };
         
         $scope.isTableDisabled = function(table)
-        {//is isDisabled important for database? can be emitted?
-            var reservationsCounter = 0;
-            if (typeof (table.reservations) != 'undefined')
-                reservationsCounter = table.reservations.length;
+        {//is table.isDisabled important for database? can be emitted?
+            
+            var reservationsCounter = table.reservations.length;
             if ($scope.reservation.alldayres == true) {
                 table.isDisabled = reservationsCounter > 0;
                 return table.isDisabled;
@@ -225,7 +228,7 @@ angular.module('hostess.controllers')
                         hoursOverlapp = $scope.CheckHoursOverlapp($scope.reservation.starthour, $scope.reservation.endhour, table.reservations[j].starthour, table.reservations[j].endhour);
 
                     if (hoursOverlapp == true) {
-                        tables.isDisabled = true;
+                        table.isDisabled = true;
                         return true;
                         break;
                     }
@@ -259,7 +262,7 @@ angular.module('hostess.controllers')
         $scope.$watch('reservation.starthour', function () {
             if ($scope.reservation.starthour != "")
                 $scope.reservation.alldayres = false;
-        });
+        });//change watch to something else
 
         $scope.$watch('reservation.endhour', function () {
             if ($scope.reservation.endhour != "")
@@ -269,10 +272,7 @@ angular.module('hostess.controllers')
         $scope.openAllReservations = function () {
             var modalInstance = $uibModal.open({
                 templateUrl: 'scripts/src/views/allReservations.html',
-                controller: 'allReservationsController',
-                resolve: {
-                    mapIndex: $scope.carouselIndex
-                }
+                controller: 'allReservationsController'
             });
         };
      
@@ -299,6 +299,7 @@ angular.module('hostess.controllers')
         };
 
         $scope.SearchReservation = function () {
+            alert("in serachReservation");
             $scope.ClearAllHighlightTables();
             if ($scope.nameToSearch.length < 2)
                 return;
@@ -325,4 +326,71 @@ angular.module('hostess.controllers')
             }
         };
 
+        //function getAllReservations() {
+        //    $scope.allReservationList = [];
+        //    //Extract reservations from mapsData into a new list
+        //    angular.forEach($rootScope.mapsData, function (map) {
+        //        angular.forEach(map.tables, function (table) {
+        //            if (typeof (table.reservations) != 'undefined') {
+        //                angular.forEach(table.reservations, function (res) {
+        //                    $scope.allReservationList.push(res);
+        //                });
+        //            }
+        //        });
+        //    });
+
+        //    //Go over the unassigned reservations' list
+        //    angular.forEach($rootScope.mapsData, function (map) {//NEEDS TO BE CHANGED SO THAT reservationsNoTable IS NOT PER MAP
+        //        if (typeof (map.reservationsNoTable) != 'undefined') {
+        //            angular.forEach(map.reservationsNoTable, function (res) {
+        //                $scope.allReservationList.push(res);
+        //            });
+        //        }
+        //    });
+
+        //    if ($scope.allReservationList.length > 0) {
+        //        $scope.allReservationList.sort(compareByStartHour);
+        //        handleHourFormat($scope.allReservationList);
+        //    }
+
+        //}
+        function getAllDataByDate(selectedDate) {//gets all data and puts it in respective scopes. returns mapsfactory's promise.
+            //var defer2 = $q.defer();
+            return mapsFactory.getMapsData(selectedDate).then(function (result) {
+                //$scope.mapsData = result;
+                $rootScope.mapsData = result;
+                //alert(JSON.stringify($rootScope.mapsData));
+                var allReservationsData = reservationFactory.getCurrentReservationsData();
+                handleHourFormat(allReservationsData[0]);//also need to sort ? $scope.allReservationList.sort(compareByStartHour);
+                handleHourFormat(allReservationsData[1]);
+                $rootScope.allReservationList = allReservationsData[0];
+                $rootScope.reservationsNoTable = allReservationsData[1];
+                return result;
+                //defer2.resolve(result);
+            }, function (error) {
+                alert(error);
+                //defer2.reject(error);
+            });
+            //return defer2.promise;//replace with $q.when?
+        }
+
+        function handleHourFormat(reservationList) {
+            for (var i = 0; i < reservationList.length; i++) {
+                if (reservationList[i].starthour != "" && reservationList[i].starthour != null) {
+                    reservationList[i].starthour = reservationList[i].starthour.substring(0, 5);
+                }
+                if (reservationList[i].endhour != "" && reservationList[i].endhour != null) {
+                    reservationList[i].endhour = reservationList[i].endhour.substring(0, 5);
+                }
+            }
+        }
+
+        function compareByStartHour(a, b) {
+            if (a.starthour < b.starthour)
+                return -1;
+            else if (a.starthour > b.starthour)
+                return 1;
+            else
+                return 0;
+        }
     }]);

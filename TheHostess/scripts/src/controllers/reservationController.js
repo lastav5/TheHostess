@@ -63,7 +63,7 @@
                 $scope.reservationList.push(reservation);
         }
 
-        $scope.getAllReservations();
+        //$scope.getAllReservations();
         $scope.saveReservations = function () {
 
         };

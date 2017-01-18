@@ -12,6 +12,7 @@
     "scripts\\libs\\angular-resource\\package.json",
     "scripts\\libs\\jquery\\src\\outro.js",
     "scripts\\libs\\jquery\\src\\intro.js",
+    "scripts\\src\\directives\\reservationDirective.js",
     "scripts\\libs\\bootstrap\\less\\mixins\\responsive-visibility.less",
     "scripts\\libs\\bootstrap\\dist\\js\\bootstrap.min.js",
     "scripts\\libs\\bootstrap\\js\\affix.js",
@@ -247,6 +248,7 @@
     "scripts\\libs\\bootstrap\\package.json",
     "res\\screens\\android\\screen-ldpi-portrait.png",
     "scripts\\libs\\jquery\\src\\jquery.js",
+    "scripts\\src\\views\\reservationItem.html",
     "scripts\\libs\\bootstrap\\less\\thumbnails.less",
     "scripts\\libs\\bootstrap\\dist\\js\\npm.js",
     "scripts\\libs\\bootstrap\\fonts\\glyphicons-halflings-regular.woff2",
@@ -371,7 +373,10 @@
   "deletedFilesIos": [],
   "addedPluginsIos": [],
   "deletedPluginsIos": [],
-  "changedFiles": [],
+  "changedFiles": [
+    "scripts\\src\\controllers\\editMapController.js",
+    "scripts\\src\\controllers\\reservationController.js"
+  ],
   "deletedFiles": [],
   "addedPlugins": [],
   "deletedPlugins": []

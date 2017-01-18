@@ -300,6 +300,7 @@
     <Content Include="scripts\src\controllers\overallController.js" />
     <Content Include="scripts\src\controllers\reservationController.js" />
     <Content Include="scripts\src\directives\myDraggableDirective.js" />
+    <Content Include="scripts\src\directives\reservationDirective.js" />
     <Content Include="scripts\src\directives\setTableDirective.js" />
     <Content Include="scripts\src\directives\styleTableDirective.js" />
     <Content Include="scripts\src\directives\tableDirective.js" />
@@ -312,6 +313,7 @@
     <Content Include="scripts\src\views\editMapView.html" />
     <Content Include="scripts\src\views\mapView.html" />
     <Content Include="scripts\src\views\reservation.html" />
+    <Content Include="scripts\src\views\reservationItem.html" />
     <Folder Include="images\" />
     <Content Include="merges\android\scripts\android2.3-jscompat.js" />
     <Content Include="merges\android\scripts\platformOverrides.js" />

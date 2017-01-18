@@ -8,7 +8,7 @@ module.exports = function(app) {
 
 // If the Node process ends
 process.on('SIGINT', function() {
- 
+  process.exit();
 });
 console.log("in routes");
 
@@ -129,156 +129,92 @@ console.log(_tablesStr);
     });
 });
 
-app.get('/api/maps/:selectedDate', function (request, response) {
-  //pg.defaults.ssl = true;
-     pg.connect(conString, function(err, client, done) {
-       if(err) {
-         return console.error('error fetching client from pool', err);
-       }
-       //client.query('SELECT $1::int AS number', ['1'], function(err, result)
-       var _maps, _tables, _reservations, _reservationsWithoutTable;
+app.get('/api/reservations/bydate/:selectedDate', function (request, response) {
+  pg.connect(conString, function(err, client, done) {
+      if(err) {
+        return console.error('error fetching client from pool', err);
+      }
+      client.query("SELECT * from reservations where tablenumbers is not null and tablenumbers!='' and reservations.isdeleted=false and reservations.date=to_date('"+request.params.selectedDate+"', 'DD/MM/YYYY')", function (err, resultRes) {
+            if(err) {
+              response.status(500).send('failed getting reservations from db');
+              return console.error('error running query', err);
+            }
+            _reservations = resultRes.rows;
 
-        console.log(request.params.selectedDate);
-         client.query('SELECT * from maps where isdeleted=false', function(err, result) {
-             _maps= result.rows;
-            
-             client.query('SELECT * from tables where isdeleted=false', function(err, result) {
-                 _tables= result.rows;
-                 
-                 client.query("SELECT * from reservations inner join reservationstables on reservations.reservationid=reservationstables.reservationid where reservations.isdeleted=false and date=to_date('"+request.params.selectedDate+"', 'DD/MM/YYYY')", function (err, result) {
-                     _reservations = result.rows;
+            client.query("SELECT * from reservations where (tablenumbers is null or tablenumbers='') and isdeleted=false and reservations.date=to_date('"+request.params.selectedDate+"', 'DD/MM/YYYY')", function(err, resultRWT) {
+              done();
 
-                     client.query("SELECT * from reservations where (tablenumbers is null or tablenumbers='') and isdeleted=false and date=to_date('"+request.params.selectedDate+"', 'DD/MM/YYYY')", function (err, result) {
-                         _reservationsWithoutTable = result.rows;
-                             //call `done()` to release the client back to the pool 
-                             done();
-
-                             if (_tables != null) {
-                                 var _tablesLength= _tables.length;
-                                 for (var i = 0; i < _tablesLength; i++) {
-                                     var _mapsLength = _maps.length;
-                                     for (var j = 0; j < _mapsLength; j++) {
-                                         if (typeof (_maps[j].tables) == 'undefined')
-                                             _maps[j].tables = [];
-                                         if (_maps[j].mapid == _tables[i].mapid)
-                                             _maps[j].tables.push(_tables[i]);
-                                     }
-                                 }
-
-                                 if (_reservations != null) {
-                                     var _reservationsLength = _reservations.length;
-                                     for (var i = 0; i < _reservationsLength; i++) {
-                                         var _mapsLength= _maps.length;
-                                         for (var j = 0; j < _mapsLength; j++) {
-                                             var _mapsTablesLength= _maps[j].tables.length;
-                                             for (var k = 0; k < _mapsTablesLength; k++) {
-                                                 if (typeof (_maps[j].tables[k].reservations) == 'undefined')
-                                                     _maps[j].tables[k].reservations = [];
-                                                 if (_maps[j].tables[k].tableid == _reservations[i].tableid)
-                                                     _maps[j].tables[k].reservations.push(_reservations[i]);
-                                             }
-                                         }
-                                     }
-                                 }
-
-                                 if (_reservationsWithoutTable != null) {
-                                     var _reservationsWithoutTableLength = _reservationsWithoutTable.length;
-                                     for (var i = 0; i < _reservationsWithoutTableLength; i++) {
-                                         for (var j = 0; j < _maps.length; j++) {
-                                             if (typeof (_maps[j].reservationsNoTable) == 'undefined')
-                                                 _maps[j].reservationsNoTable = [];
-                                             _maps[j].reservationsNoTable.push(_reservationsWithoutTable[i]);
-                                            
-                                         }
-                                     }
-
-                                 }
-
-                             }
-
-                             console.log(JSON.stringify(_maps));
-                             response.json(_maps);
-                        });
-                     });
-            });
-         });
-
-
-        
-         if(err) {
-           return console.error('error running query', err);
-         }
-         //console.log(result.rows[0].number);
-    
- 
-     });
-//console.log('getting mapsData');
- /*   var data = [
-    {
-        'mapId': 0,
-        'userId': 0,
-        'name': 'myFirstMap',
-        'tables': [
-          {
-            'tableId': 0,
-            'shape': 'circle',
-            'posX': 10.0,
-            'posY': 10.0,
-            'width': 10.0,
-            'height': 10.0,
-            'number': 0,
-            'mapId': 0,
-            'occupied': false,
-            'reservations': [
-              {
-                'reservationId': 0,
-                'name': '',
-                'guestCount': 0,
-                'date': '08-02-2015',
-                'time': '21:30',
-                'notes': '',
-                'phone': '',
-                'tableId': 0,
-                'createdAt': ''
+              if(err) {
+                response.status(500).send('failed getting reservationsnotable from db');
+                return console.error('error running query', err);
               }
-            ]
-          },
-          {
-            'tableId': 1,
-            'shape': 'rectangle',
-            'posX': 20.0,
-            'posY': 20.0,
-            'width': 20.0,
-            'height': 10.0,
-            'number': 0,
-            'mapId': 0,
-            'occupied': false,
-            'reservations': []
-          }
-        ]
-    },
-    {
-        'mapId': 1,
-        'userId': 0,
-        'name':'mySecondMap',
-        'tables': [
-          {
-            'tableId': 2,
-            'shape': 'rectangle',
-            'posX': 10.0,
-            'posY': 10.0,
-            'width': 10.0,
-            'height': 10.0,
-            'number': 0,
-            'mapId': 1,
-            'occupied': false,
-            'reservations': []
-          }
-        ]
-    }
-    ];
-    */
-    
+
+              var _reservationsWithoutTable = resultRWT.rows;
+              var reservationsData = [];
+
+               if (_reservations == null) {
+                   _reservations=[];
+               }
+               if (_reservationsWithoutTable == null) {
+                   _reservationsWithoutTable=[];
+               }
+               reservationsData=[_reservations, _reservationsWithoutTable];
+              
+              response.json(reservationsData);
+              console.log(JSON.stringify(reservationsData));
+            });
+      });
+  });
+});
+
+app.get('/api/maps/:selectedDate', function (request, response) {
+     pg.connect(conString, function(err, client, done) {
+         if(err) {
+           res.status(500).send({ error: "failed getting maps from db" });
+           return console.error('failed getting maps from db', err);
+         }
+       
+        console.log(request.params.selectedDate);
+         client.query('SELECT * from maps where isdeleted=false', function(err, resultMaps) {
+             if(err) {
+                res.status(500).send({ error: "failed getting maps from db" });
+                return console.error('failed getting maps from db', err);
+             }
+             var _maps= resultMaps.rows;
+             client.query('SELECT * from tables where isdeleted=false', function(err, resultTables) {
+                     done();
+
+                     if(err) {
+                        res.status(500).send({ error: "failed getting maps from db" });
+                        return console.error('failed getting maps from db', err);
+                     }
+                     _tables = resultTables.rows;
+
+                     if (_tables != null) {
+
+                          //reset maps.tables to []
+                         var _mapsLength = _maps.length;
+                         for (var j = 0; j < _mapsLength; j++) {
+                            _maps[j].tables = [];
+                         }
+                         //insert tables into maps
+                         var _tablesLength= _tables.length;
+                         for (var i = 0; i < _tablesLength; i++) {
+                             var _mapsLength = _maps.length;
+                             for (var j = 0; j < _mapsLength; j++) {
+                                 if (_maps[j].mapid == _tables[i].mapid)
+                                     _maps[j].tables.push(_tables[i]);
+                             }
+                         }
+
+                     }
+
+                     console.log(JSON.stringify(_maps));
+                     response.json(_maps);
+                });
+                     
+         });
+     });
   });
 
 app.post('/api/maps',function(request,response){

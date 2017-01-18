@@ -1,95 +1,110 @@
-﻿<nav carousel-index="carouselIndex" class="navbar navbar-default navbar-inverse">
-    <div class="container-fluid" style="width:100%;margin:0px;padding:0px" id="editNavbar">
-        <div class="navbar-header" style="width:100%;margin:0px">
-            <button id="editMap" style="line-height:150%;width:11%" ng-click="editMap()">עריכת מפה</button>   
-            <button id="openAllReservations" style="line-height:150%;width:11%" ng-click="openAllReservations()">הזמנות</button>         
-            <div class="container" style="float:right;width:40%">
-                <div class="row">
-                    <div class='col-sm-6'>
-                        <input type='text' class="form-control" id='datetimepicker' ng-model="selectedDate"/>
+﻿<div>
+    <nav carousel-index="carouselIndex" class="navbar navbar-default navbar-inverse">
+        <div class="container-fluid" style="width:100%;margin:0px;padding:0px" id="editNavbar">
+            <div class="navbar-header" style="width:100%;margin:0px">
+                <button id="editMap" style="line-height:150%;width:11%" ng-click="editMap()">עריכת מפה</button>
+                <button id="openAllReservations" style="line-height:150%;width:11%" ng-click="openAllReservations()">הזמנות</button>
+                <div class="container" style="float:right;width:40%">
+                    <div class="row">
+                        <div class='col-sm-6'>
+                            <input type='text' class="form-control" id='datetimepicker' ng-model="selectedDate"/>
+                        </div>
                     </div>
                 </div>
+                <button ng-click="addReservation()" class="btn-link" style="float:right;font-size:270%">
+                    <span class="glyphicon glyphicon-plus"></span>
+                </button>
+
             </div>
-            <button ng-click="addReservation()" class="btn-link" style="float:right;font-size:270%">
-                <span class="glyphicon glyphicon-plus"></span>
-            </button>
-            
+        </div>
+    </nav>
+    <div style="margin-bottom:2%">
+        <table style="direction:rtl; width:100%">
+            <tr><td ng-repeat="day in nextWeek"><button ng-click="setDate(day.date)" style="padding:8% 12% 8% 12%; font-size:115%; width:100%">{{day.date | date: "dd/MM"}} {{day.dayOfWeek}}</button></td></tr>
+        </table>
+    </div>
+
+    <div><input ng-change="SearchReservation()" ng-model="nameToSearch" placeholder="חיפוש..."/></div>
+    <div ng-show="showAddReservationDiv">
+
+        <div style="display:inline-block">
+            <table class="reservationTable">
+                <tr>
+                    <td><span style="font-size:200%" class="glyphicon glyphicon-phone-alt"></span><input type="text" class="phoneInput" ng-model="reservation.phone" placeholder="טלפון" /></td>
+                    <td><span style="font-size:200%" class="glyphicon glyphicon-eye-open"></span><input class="nameInput" type="text" ng-model="reservation.name" placeholder="שם האורח" style="width:77%" />
+
+                            <button type="button" ng-click="CloseReservation()" class="btn btn-default btn-sm" style="padding:2%; font-size:100%; opacity:0.5">
+                                <span class="glyphicon glyphicon-remove"></span>
+                            </button>
+
+                    </td>
+                </tr>
+            </table>
+            <table class="reservationTable">
+                <tr>
+                    <td class="hourTd">
+                        <div class="input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true">
+                            <span class="input-group-addon" style="background:none;border:none; padding:0px; margin:0px">
+                                <span class="glyphicon glyphicon-time" style="font-size:100%"></span>
+                            </span>
+                            <input type="text" class="form-control hourInput" value="21:00" ng-model="reservation.starthour" placeholder="שעה">
+                        </div>
+                    </td>
+                    <td class="hourTd">
+                        <div class="input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true">
+                            <span class="input-group-addon" style="background:none;border:none;padding:0px;margin:0px">
+                                <span class="glyphicon glyphicon-time" style="font-size:100%"></span>
+                            </span>
+                            <input type="text" class="form-control hourInput" value="00:00" ng-model="reservation.endhour" placeholder="שעה">
+                        </div>
+                    </td>
+                    <td class="hourTd">
+                        <div class="input-group" style="width:100%">
+                            <span style="font-size:150%"> כל היום</span>
+                            <input type="checkbox" style="margin-right:7%; vertical-align:sub" ng-checked="true" ng-true-value="true" ng-model="reservation.alldayres" />
+                        </div>
+                    </td>
+                    <td class="guestCounterTd">
+                        <div class="input-group" style="width:100%">
+                            <div style="float:right;width:40%;overflow:auto;height:100%"><span style="font-size:150%;margin-top:20%" class="glyphicon glyphicon-user"></span> </div>
+                            <div style="float:right;width:58%"><input type="text" class="guestCounterInput" ng-model="reservation.guestcount" /></div>
+                        </div>
+                    </td>
+                    <td class="tableTd"><span style="font-size:150%" class="glyphicon glyphicon-unchecked"></span><label class="tableLabel">{{reservation.tablenumbers}}</label></td>
+                </tr>
+            </table>
+            <table class="reservationTable">
+                <tr>
+                    <td><textarea rows="1" class="commentsInput" ng-model="reservation.notes" placeholder="הערות" /></td>
+                    <td><button ng-click="saveReservation()" style="width:99%;height:99%"><span class="glyphicon glyphicon-ok" style="font-size:180%"></span></button></td>
+                </tr>
+            </table>
         </div>
     </div>
-</nav>
-<div style="margin-bottom:2%">
-    <table style="direction:rtl; width:100%">
-        <tr><td ng-repeat="day in nextWeek"><button ng-click="setDate(day.date)" style="padding:8% 12% 8% 12%; font-size:115%; width:100%">{{day.date | date: "dd/MM"}} {{day.dayOfWeek}}</button></td></tr>
-    </table>
-</div>
-
-<div><input ng-change="SearchReservation()" ng-model="nameToSearch" placeholder="חיפוש..."/></div>
-<div ng-show="showAddReservationDiv">
-       
-    <div style="display:inline-block">
-        <table class="reservationTable">
-            <tr>
-                <td><span style="font-size:200%" class="glyphicon glyphicon-phone-alt"></span><input type="text" class="phoneInput" ng-model="reservation.phone" placeholder="טלפון" /></td>
-                <td><span style="font-size:200%" class="glyphicon glyphicon-eye-open"></span><input class="nameInput" type="text" ng-model="reservation.name" placeholder="שם האורח" style="width:77%" />
-                    
-                        <button type="button" ng-click="CloseReservation()" class="btn btn-default btn-sm" style="padding:2%; font-size:100%; opacity:0.5">
-                            <span class="glyphicon glyphicon-remove"></span>
-                        </button>
-                    
-                </td>
-            </tr>
-        </table>
-        <table class="reservationTable">
-            <tr>
-                <td class="hourTd">
-                    <div class="input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true">
-                        <span class="input-group-addon" style="background:none;border:none; padding:0px; margin:0px">
-                            <span class="glyphicon glyphicon-time" style="font-size:100%"></span>
-                        </span>
-                        <input type="text" class="form-control hourInput" value="21:00" ng-model="reservation.starthour" placeholder="שעה">
-                    </div>
-                </td>
-                <td class="hourTd">
-                    <div class="input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true">
-                        <span class="input-group-addon" style="background:none;border:none;padding:0px;margin:0px">
-                            <span class="glyphicon glyphicon-time" style="font-size:100%"></span>
-                        </span>
-                        <input type="text" class="form-control hourInput" value="00:00" ng-model="reservation.endhour" placeholder="שעה">
-                    </div>
-                </td>
-                <td class="hourTd">
-                    <div class="input-group" style="width:100%">
-                        <span style="font-size:150%"> כל היום</span>
-                        <input type="checkbox" style="margin-right:7%; vertical-align:sub" ng-checked="true" ng-true-value="true" ng-model="reservation.alldayres" />
-                    </div>
-                </td>
-                <td class="guestCounterTd">
-                    <div class="input-group" style="width:100%">
-                        <div style="float:right;width:40%;overflow:auto;height:100%"><span style="font-size:150%;margin-top:20%" class="glyphicon glyphicon-user"></span> </div>
-                        <div style="float:right;width:58%"><input type="text" class="guestCounterInput" ng-model="reservation.guestcount" /></div>
-                    </div>
-                </td>
-                <td class="tableTd"><span style="font-size:150%" class="glyphicon glyphicon-unchecked"></span><label class="tableLabel">{{reservation.tablenumbers}}</label></td>
-            </tr>
-        </table>
-        <table class="reservationTable">
-            <tr>
-                <td><textarea rows="1" class="commentsInput" ng-model="reservation.notes" placeholder="הערות" /></td>
-                <td><button ng-click="saveReservation()" style="width:99%;height:99%"><span class="glyphicon glyphicon-ok" style="font-size:180%"></span></button></td>
-            </tr>
-        </table>
-    </div>
-</div>
-<div class="angularCarousel">
-    <ul id="ulCarousel" rn-carousel rn-carousel-index="carouselIndex" rn-carousel-locked="carouseldetails.islocked">
-        <li ng-repeat="map in mapsData">
-            <div ng-repeat="table in map.tables" set-table table="table" ng-class="{'disabled-class': isTableDisabled(table) && showAddReservationDiv}" ng-style="table.isHighlight && {'border':'1px solid red'} || {'border':'1px solid black'}" ng-disabled="isTableDisabled(table) && showAddReservationDiv" ng-click="openReservation(table.tableid)" carouseldetails=" carouseldetails">
-                <div style="align-self:center">{{table.tableid}}</div>
-            </div>
+    <ul>
+        <li ng-class="{tab:true , tabSelected:viewStyleSelected==0}" ng-click="viewStyleSelected=0">
+            רשימה
         </li>
-        {{carouseldetails.islocked}}
-
-        {{mapsData[0].tables[0].tableid}}
+        <li ng-class="{tab:true , tabSelected:viewStyleSelected==1}" ng-click="viewStyleSelected=1">
+            מפה
+        </li>
     </ul>
-    <div rn-carousel-indicators ng-if="mapsData.length > 1" slides="mapsData" rn-carousel-index="carouselIndex"></div>
+    <div ng-show="viewStyleSelected==0">
+        <div ng-repeat="reservation in allReservationList">
+            <reservation reservation="reservation"></reservation>
+        </div>
+    </div>
+    <div ng-show="viewStyleSelected==1">
+        <div class="angularCarousel">
+            <ul id="ulCarousel" rn-carousel rn-carousel-index="carouselIndex" rn-carousel-locked="carouseldetails.islocked">
+                <li ng-repeat="map in mapsData">
+                    <div ng-repeat="table in map.tables" set-table table="table" ng-class="{'disabled-class': isTableDisabled(table) && showAddReservationDiv}" ng-style="table.isHighlight && {'border':'1px solid red'} || {'border':'1px solid black'}" ng-disabled="isTableDisabled(table) && showAddReservationDiv" ng-click="openReservation(table.tableid)" carouseldetails=" carouseldetails">
+                        <div style="align-self:center">{{table.tableid}}</div>
+                    </div>
+                </li>
+                {{carouseldetails.islocked}}
+            </ul>
+            <div rn-carousel-indicators ng-if="mapsData.length > 1" slides="mapsData" rn-carousel-index="carouselIndex"></div>
+        </div>
+    </div>
 </div>

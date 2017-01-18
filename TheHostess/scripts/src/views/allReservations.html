@@ -1,9 +1,9 @@
 ﻿
-<div id="allReservations" class="modal-content" role="dialog">
+<div id="allReservations" class="modal-content" role="dialog" ng-controller="allReservationsController">
     <div class="modal-header">
         <div class="rightDiv"><button class="btn btn-primary btnModalClose" type="button" ng-click="cancel()"><span class="glyphicon glyphicon-remove"></span></button></div>
         <div class="rightDiv middleHeader">הזמנות</div>
-       
+
     </div>
     <div class="modal-body">
         <div class="modalDiv">
@@ -36,7 +36,7 @@
                             <td class="hourTd">
                                 <div class="input-group" style="width:100%">
                                     <span> כל היום</span>
-                                    <input type="checkbox" style="margin-right:7%; vertical-align:sub"  ng-true-value="true" ng-model="reservation.alldayres" />
+                                    <input type="checkbox" style="margin-right:7%; vertical-align:sub" ng-true-value="true" ng-model="reservation.alldayres" />
                                 </div>
                             </td>
                             <td class="guestCounterTd">
@@ -56,7 +56,7 @@
                     </table>
                 </div>
                 <div style="width:100%">&nbsp;</div>
-                
+
             </div>
         </div>
 

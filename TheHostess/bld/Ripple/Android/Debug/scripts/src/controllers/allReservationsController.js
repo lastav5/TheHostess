@@ -1,7 +1,6 @@
 ﻿angular.module('hostess.controllers')
-    .controller('allReservationsController', ['$scope', '$routeParams', '$uibModalInstance', '$rootScope','mapIndex',
-    function ($scope, $routeParams, $uibModalInstance, $rootScope, mapIndex) {
-
+    .controller('allReservationsController', ['$scope', '$routeParams', '$uibModalInstance', '$rootScope',
+    function ($scope, $routeParams, $uibModalInstance, $rootScope) {
 
         $scope.allReservationList = [];
         $(document).ready(function () {
@@ -10,6 +9,7 @@
             });
         });
        
+
         $scope.handleHourFormat = function (reservationList) {
             for (var i = 0; i < reservationList.length; i++) {
                 if (reservationList[i].starthour != "" && reservationList[i].starthour != null) {
@@ -24,23 +24,29 @@
         };
 
         $scope.getAllReservations = function () {
-            var currentMap = mapIndex;
-            var tableCounter = $rootScope.mapsData[currentMap].tables.length;
-            for (var i = 0; i < tableCounter; i++) {
-                if (typeof ($rootScope.mapsData[currentMap].tables[i].reservations) != 'undefined') {
-                    var reservationsLength = $rootScope.mapsData[currentMap].tables[i].reservations.length;
-                    for (var j = 0; j < reservationsLength; j++) {
-                        $scope.allReservationList.push($rootScope.mapsData[currentMap].tables[i].reservations[j]);
+            //Extract reservations from mapsData into a new list
+            angular.forEach($rootScope.mapsData, function (map) {
+                angular.forEach(map.tables, function (table) {
+                    if (typeof (table.reservations) != 'undefined') {
+                        angular.forEach(table.reservations, function (res) {
+                            $scope.allReservationList.push(res);
+                        });
+                    }
+                });
+            });
+            
+
+            //Go over the unassigned reservations' list
+            foreach(map in $rootScope.mapsData)//NEEDS TO BE CHANGED SO THAT reservationsNoTable IS NOT PER MAP
+            {
+                if (typeof (map.reservationsNoTable) != 'undefined'){
+                    foreach(res in map.reservationsNoTable)
+                    {
+                        $scope.allReservationList.push(res);
                     }
                 }
             }
-
-            if (typeof ($rootScope.mapsData[currentMap].reservationsNoTable) != 'undefined') {
-                var reservationsNoTableLength = $rootScope.mapsData[currentMap].reservationsNoTable.length;
-                for (var i = 0; i < reservationsNoTableLength; i++) {
-                    $scope.allReservationList.push($rootScope.mapsData[currentMap].reservationsNoTable[i]);
-                }
-            }
+            
 
             if ($scope.allReservationList.length > 0) {
                 $scope.allReservationList.sort(compareByStartHour);
@@ -49,7 +55,7 @@
              
         }
 
-        $scope.getAllReservations();
+        //$scope.getAllReservations();
 
         $scope.cancel = function () {
             $uibModalInstance.dismiss('cancel');
@@ -71,15 +77,16 @@
             }, 1000);
         };
 
+        function compareByStartHour(a, b) {
+            if (a.starthour < b.starthour)
+                return -1;
+            else if (a.starthour > b.starthour)
+                return 1;
+            else
+                return 0;
+        }
     }]);
 
-function compareByStartHour(a, b) {
-    if (a.starthour < b.starthour)
-        return -1;
-    else if (a.starthour > b.starthour)
-        return 1;
-    else
-        return 0;
-}
+
 
 
