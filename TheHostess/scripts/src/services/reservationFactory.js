@@ -4,15 +4,16 @@
         var reservationResource = $resource("http://localhost:4407/api/reservations/:action/:id:date/", { action: "@action" ,id: "@id", date:"@date" },
             {
                 'save': { method: 'POST', isArray: true },
-                'get': { method: 'GET', isArray: true },
+                'get': { method: 'GET', isArray: false },
                 'delete': { method: 'DELETE', isArray: true }
             });
         var reservationsData;
         return {
-            getReservationsByDate: function (date) {
+            getReservationsByDate: function (date) {//returns Object with 2 arrays - reservations, reservations without table
                 var defer = $q.defer();
                 reservationResource.get({ action: "bydate", date: date }, function (result) {
                     reservationsData = result;
+                    console.log(JSON.stringify(result));
                     defer.resolve(result);
                 }, function (error) {
                     defer.reject(error);

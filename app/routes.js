@@ -150,7 +150,7 @@ app.get('/api/reservations/bydate/:selectedDate', function (request, response) {
               }
 
               var _reservationsWithoutTable = resultRWT.rows;
-              var reservationsData = [];
+              var reservationsData = {};
 
                if (_reservations == null) {
                    _reservations=[];
@@ -158,7 +158,7 @@ app.get('/api/reservations/bydate/:selectedDate', function (request, response) {
                if (_reservationsWithoutTable == null) {
                    _reservationsWithoutTable=[];
                }
-               reservationsData=[_reservations, _reservationsWithoutTable];
+               reservationsData={"reservations":_reservations, "reservationsWithoutTable": _reservationsWithoutTable};
               
               response.json(reservationsData);
               console.log(JSON.stringify(reservationsData));

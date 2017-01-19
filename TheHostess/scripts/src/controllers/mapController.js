@@ -21,11 +21,7 @@ angular.module('hostess.controllers')
         getAllDataByDate($scope.selectedDate).then(function (data) {
             return data;//resolve the promise
         });
-        
-        //mapsFactory.getMapsData(dateSelected).then(function (result) {
-        //    $rootScope.mapsData = result;
-        //});
-        getAllDataByDate(dateSelected);
+
         $('.clockpicker').clockpicker();
 
         $scope.nextWeek = [];
@@ -65,9 +61,8 @@ angular.module('hostess.controllers')
         $scope.onDatePickerChange = function () {
             $scope.showAddReservationDiv = false;
             $scope.selectedDate = $('#datetimepicker').val();
-            //alert("datepickerchange");
             getAllDataByDate($('#datetimepicker').val()).then(function (data) {
-                //alert("indatepickerchange" + data);
+                
             });
         };
 
@@ -331,45 +326,16 @@ angular.module('hostess.controllers')
             }
         };
 
-        //function getAllReservations() {
-        //    $scope.allReservationList = [];
-        //    //Extract reservations from mapsData into a new list
-        //    angular.forEach($rootScope.mapsData, function (map) {
-        //        angular.forEach(map.tables, function (table) {
-        //            if (typeof (table.reservations) != 'undefined') {
-        //                angular.forEach(table.reservations, function (res) {
-        //                    $scope.allReservationList.push(res);
-        //                });
-        //            }
-        //        });
-        //    });
-
-        //    //Go over the unassigned reservations' list
-        //    angular.forEach($rootScope.mapsData, function (map) {//NEEDS TO BE CHANGED SO THAT reservationsNoTable IS NOT PER MAP
-        //        if (typeof (map.reservationsNoTable) != 'undefined') {
-        //            angular.forEach(map.reservationsNoTable, function (res) {
-        //                $scope.allReservationList.push(res);
-        //            });
-        //        }
-        //    });
-
-        //    if ($scope.allReservationList.length > 0) {
-        //        $scope.allReservationList.sort(compareByStartHour);
-        //        handleHourFormat($scope.allReservationList);
-        //    }
-
-        //}
         function getAllDataByDate(selectedDate) {//gets all data and puts it in respective scopes. returns mapsfactory's promise.
             //var defer2 = $q.defer();
             return mapsFactory.getMapsData(selectedDate).then(function (result) {
-                //$scope.mapsData = result;
                 $rootScope.mapsData = result;
                 //alert(JSON.stringify($rootScope.mapsData));
-                var allReservationsData = reservationFactory.getCurrentReservationsData();
-                handleHourFormat(allReservationsData[0]);//also need to sort ? $scope.allReservationList.sort(compareByStartHour);
-                handleHourFormat(allReservationsData[1]);
-                $rootScope.allReservationList = allReservationsData[0];
-                $rootScope.reservationsNoTable = allReservationsData[1];
+                var allReservationsData = reservationFactory.getCurrentReservationsData();//returns an OBJECT
+                handleHourFormat(allReservationsData['reservations']);//also need to sort ? $scope.allReservationList.sort(compareByStartHour);
+                handleHourFormat(allReservationsData['reservationsWithoutTable']);
+                $rootScope.allReservationList = allReservationsData['reservations'];
+                $rootScope.reservationsNoTable = allReservationsData['reservationsWithoutTable'];
                 return result;
                 //defer2.resolve(result);
             }, function (error) {
