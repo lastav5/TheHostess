@@ -1,8 +1,12 @@
 ﻿<div style="display:inline-block">
     <table class="reservationTable">
         <tr>
-            <td><span class="glyphicon glyphicon-phone-alt"></span><input ng-readonly="true" style="font-size:100%" type="text" class="phoneInput" ng-model="res.phone" /></td>
-            <td><span class="glyphicon glyphicon-eye-open"></span><input ng-readonly="true" style="font-size:100%" class="nameInput" type="text" ng-model="res.name" /></td>
+            <td><span class="glyphicon glyphicon-phone-alt"></span><input ng-readonly="!isEditing" style="font-size:100%" type="text" class="phoneInput" ng-model="res.phone" /></td>
+            <td><span class="glyphicon glyphicon-eye-open"></span><input ng-readonly="!isEditing" style="font-size:100%" class="nameInput" type="text" ng-model="res.name" /></td>
+            <td><button ng-click="removeReservation(res)" ng-show="!isEditing">מחק</button></td>
+            <td><button ng-click="editReservation(res)" ng-show="!isEditing">ערוך</button></td>
+            <td><button ng-click="cancelEdit(res)" ng-show="isEditing">בטל</button></td>
+            <td><button ng-click="updateReservation(res)" ng-show="isEditing">שמור</button></td>
         </tr>
     </table>
     <table class="reservationTable">
@@ -26,13 +30,13 @@
             <td class="hourTd">
                 <div class="input-group" style="width:100%">
                     <span> כל היום</span>
-                    <input type="checkbox" ng-readonly="true" style="margin-right:7%; vertical-align:sub" ng-checked="true" ng-true-value="true" ng-model="res.alldayres" />
+                    <input type="checkbox" ng-readonly="!isEditing" style="margin-right:7%; vertical-align:sub" ng-checked="true" ng-true-value="true" ng-model="res.alldayres" />
                 </div>
             </td>
             <td class="guestCounterTd">
                 <div class="input-group" style="width:100%">
                     <div style="float:right;width:40%;overflow:auto;height:100%"><span style="margin-top:20%" class="glyphicon glyphicon-user"></span> </div>
-                    <div style="float:right;width:58%"><input ng-readonly="true" style="font-size:100%" type="text" class="guestCounterInput" ng-model="res.guestcount" /></div>
+                    <div style="float:right;width:58%"><input ng-readonly="!isEditing" style="font-size:100%" type="text" class="guestCounterInput" ng-model="res.guestcount" /></div>
                 </div>
             </td>
             <td class="tableTd"><span class="glyphicon glyphicon-unchecked"></span><label style="font-size:100%" class="tableLabel">{{res.tablenumbers}}</label></td>
@@ -40,7 +44,7 @@
     </table>
     <table class="reservationTable">
         <tr>
-            <td><textarea rows="1" ng-readonly="true" style="font-size:100%" class="commentsInput" ng-model="res.notes" /></td>
+            <td><textarea rows="1" ng-readonly="!isEditing" style="font-size:100%" class="commentsInput" ng-model="res.notes" /></td>
             <!--td><button ng-click="saveReservation()" style="width:99%;height:99%"><span class="glyphicon glyphicon-ok" style="font-size:180%"></span></button></td-->
         </tr>
     </table>

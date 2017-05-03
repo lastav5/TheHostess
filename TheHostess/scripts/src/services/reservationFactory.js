@@ -5,7 +5,7 @@
             {
                 'save': { method: 'POST', isArray: true },
                 'get': { method: 'GET', isArray: false },
-                'delete': { method: 'DELETE', isArray: true }
+                'delete': { method: 'DELETE', isArray: false }
             });
         var reservationsData;
         return {
@@ -20,12 +20,22 @@
                 });
                 return defer.promise;
             },
+            deleteReservation: function (reservationId) {
+                var defer = $q.defer();
+                reservationResource.delete({ id: reservationId }, function (result) {
+                    console.log(result);
+                    defer.resolve(result);
+                }, function (error) {
+                    defer.reject(error);
+                });
+                return defer.promise;
+            },
             getCurrentReservationsData: function () {
                 return reservationsData;
             },
             reservationResource: function () {
                 return reservationResource;
             }
-        }
+        };
 
     });

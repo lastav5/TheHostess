@@ -3,7 +3,6 @@
         <div class="container-fluid" style="width:100%;margin:0px;padding:0px" id="editNavbar">
             <div class="navbar-header" style="width:100%;margin:0px">
                 <button id="editMap" style="line-height:150%;width:11%" ng-click="editMap()">עריכת מפה</button>
-                <button id="openAllReservations" style="line-height:150%;width:11%" ng-click="openAllReservations()">הזמנות</button>
                 <div class="container" style="float:right;width:40%">
                     <div class="row">
                         <div class='col-sm-6'>
@@ -89,23 +88,26 @@
             מפה
         </li>
     </ul>
-    <div ng-show="viewStyleSelected==0">
-        <div ng-repeat="reservation in allReservationList">
-            <reservation reservation="reservation"></reservation>
+    <div class="viewsContainer">
+        <div ng-show="viewStyleSelected==0">
+            <reservations-list reservation-list="allReservationList"></reservations-list>
+            <reservations-list reservation-list="reservationsNoTable"></reservations-list>
         </div>
-        <div style="height:150px;width:200px">{{mapsData}}</div>
-    </div>
-    <div ng-show="viewStyleSelected==1">
-        <div class="angularCarousel">
-            <ul id="ulCarousel" rn-carousel rn-carousel-index="carouselIndex" rn-carousel-locked="carouseldetails.islocked">
-                <li ng-repeat="map in mapsData">
-                    <div ng-repeat="table in map.tables" set-table table="table" ng-class="{'disabled-class': isTableDisabled(table) && showAddReservationDiv}" ng-style="table.isHighlight && {'border':'1px solid red'} || {'border':'1px solid black'}" ng-disabled="isTableDisabled(table) && showAddReservationDiv" ng-click="openReservation(table.tableid)" carouseldetails=" carouseldetails">
-                        <div style="align-self:center">{{table.tableid}}</div>
-                    </div>
-                </li>
-                {{carouseldetails.islocked}}
-            </ul>
-            <div rn-carousel-indicators ng-if="mapsData.length > 1" slides="mapsData" rn-carousel-index="carouselIndex"></div>
+        <div ng-show="viewStyleSelected==1">
+            <div class="angularCarousel">
+                <ul id="ulCarousel" rn-carousel rn-carousel-index="carouselIndex" rn-carousel-locked="carouseldetails.islocked">
+                    <li ng-repeat="map in mapsData">
+                        <div ng-repeat="table in map.tables" set-table table="table" ng-class="{'disabled-class': isTableDisabled(table) && showAddReservationDiv}" ng-style="table.isHighlight && {'border':'1px solid red'} || {'border':'1px solid black'}" ng-disabled="isTableDisabled(table) && showAddReservationDiv" ng-click="openReservationsListOfTable(table)" carouseldetails=" carouseldetails">
+                            <div style="align-self:center">{{table.tableid}}</div>
+                        </div>
+                    </li>
+                    {{carouseldetails.islocked}}
+                </ul>
+                <div rn-carousel-indicators ng-if="mapsData.length > 1" slides="mapsData" rn-carousel-index="carouselIndex"></div>
+            </div>
         </div>
     </div>
+    <modal title="הזמנות" visiblility="showTableResModal">
+        <reservations-list reservation-list="reservationList"></reservations-list>
+    </modal>
 </div>

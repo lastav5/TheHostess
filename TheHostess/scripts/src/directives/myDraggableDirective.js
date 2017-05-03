@@ -9,7 +9,7 @@
                 
                 var ulTop = document.getElementById('ulCarousel').offsetTop;
                 var ulLeft = document.getElementById('ulCarousel').offsetLeft;
-                
+                /*in order for this directive to support media queries switch window.inner with appContainer div size*/
                 scope.$watch('table', function (newVal) {//is necessary?
                     if (newVal)
                     {

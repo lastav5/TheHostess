@@ -9,7 +9,7 @@
 
                 var ulTop = document.getElementById('ulCarousel').offsetTop;
                 var ulLeft = document.getElementById('ulCarousel').offsetLeft;
-
+                console.log(window.innerWidth);
                 scope.$watch('table', function (newVal) {//is necessary?
                     if (newVal) {
                         x = Number(scope.table.posx);
@@ -35,7 +35,7 @@
                 if (scope.table.shape == "circle") {
                     element.addClass('circleBase');
                 }
-               
+                
                 element.css({
                     position: 'absolute',
                     border: '1px solid black',
@@ -45,7 +45,7 @@
                     display: 'flex',
                     justifyContent: 'center',
                     fontWeight:'bold'
-                });
+                });/*had window.innerWidth prev to screenWidth*/
 
                 element.on('touchstart', function (event) {//mousedown
                     //lock carousel.//make this table the selected table

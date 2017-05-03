@@ -78,6 +78,7 @@
     "scripts\\libs\\jquery\\src\\manipulation\\_evalUrl.js",
     "scripts\\libs\\angular-touch\\angular-touch.js",
     "scripts\\libs\\angular-bootstrap\\ui-bootstrap-tpls.min.js",
+    "scripts\\src\\views\\reservationsOfTable.html",
     "scripts\\libs\\bootstrap\\js\\modal.js",
     "res\\screens\\ios\\screen-ipad-portrait-2x.png",
     "scripts\\libs\\bootstrap\\less\\utilities.less",
@@ -116,6 +117,7 @@
     "scripts\\libs\\jquery\\src\\css\\addGetHookIf.js",
     "scripts\\libs\\angular\\.bower.json",
     "scripts\\libs\\bootstrap\\js\\popover.js",
+    "scripts\\src\\directives\\reservationsListDirective.js",
     "scripts\\libs\\jquery\\src\\css\\swap.js",
     "scripts\\libs\\bootstrap\\dist\\fonts\\glyphicons-halflings-regular.eot",
     "scripts\\libs\\bootstrap\\js\\.jscsrc",
@@ -262,6 +264,7 @@
     "scripts\\libs\\jquery\\src\\var\\hasOwn.js",
     "res\\icons\\windows\\Square150x150Logo.scale-240.png",
     "scripts\\libs\\bootstrap\\less\\input-groups.less",
+    "scripts\\libs\\my-modal\\my-modal.js",
     "scripts\\libs\\bootstrap\\less\\mixins\\clearfix.less",
     "scripts\\libs\\jquery\\src\\manipulation\\support.js",
     "res\\icons\\android\\icon-36-ldpi.png",
@@ -373,10 +376,7 @@
   "deletedFilesIos": [],
   "addedPluginsIos": [],
   "deletedPluginsIos": [],
-  "changedFiles": [
-    "scripts\\src\\controllers\\editMapController.js",
-    "scripts\\src\\controllers\\reservationController.js"
-  ],
+  "changedFiles": [],
   "deletedFiles": [],
   "addedPlugins": [],
   "deletedPlugins": []

@@ -19,7 +19,7 @@
                 var defer = $q.defer();
                 mapsResource.query({ selectedDate: selectedDate1 }, function (result) {
                     reservationFactory.getReservationsByDate(selectedDate1).then(function (reservationsData) {
-                            mapsData = mergeMapsDataReservations(result, reservationsData['reservations']);
+                            mapsData = mergeMapsDataReservations(result, reservationsData.reservations);
                             defer.resolve(mapsData);
                         }, function (error) {
                             defer.reject(error);

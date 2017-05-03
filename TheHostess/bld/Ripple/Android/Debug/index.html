@@ -10,9 +10,10 @@
 </head>
 <body>
     
-    
-    <div ng-view>
+    <div id="appContainer">
+        <div ng-view>
 
+        </div>
     </div>
  
     <script src="cordova.js"></script>
@@ -31,6 +32,7 @@
     <script src="scripts/libs/angular-animate/angular-animate.js"></script>
     <script src="scripts/libs/bootstrap/js/moment.js"></script>
     <script src="scripts/libs/bootstrap/js/bootstrap-datetimepicker.js"></script>
+    <script src="scripts/libs/my-modal/my-modal.js"></script>
 
     <link href="scripts/libs/angular-carousel/dist/angular-carousel.min.css" rel="stylesheet" />
     <link href="scripts/libs/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
@@ -52,6 +54,6 @@
     <script src="scripts/src/directives/tableDirective.js"></script>
     <script src="scripts/src/directives/setTableDirective.js"></script>
     <script src="scripts/src/directives/reservationDirective.js"></script>
-    
+    <script src="scripts/src/directives/reservationsListDirective.js"></script>
 </body>
 </html>

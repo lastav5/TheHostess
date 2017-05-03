@@ -293,7 +293,7 @@ app.get('/api/reservations/:name/:selectedDate', function (request, response) {
 
         console.log(request.params.selectedDate);
         
-        query= "select reservationstables.tableId from reservations inner join reservationstables on reservations.reservationid= reservationstables.reservationid where isdeleted!=true and reservations.name like '%"+request.params.name+"%' and reservations.date =to_date('"+request.params.selectedDate+"', 'DD/MM/YYYY')";
+        var query= "select reservationstables.tableId from reservations inner join reservationstables on reservations.reservationid= reservationstables.reservationid where isdeleted!=true and reservations.name like '%"+request.params.name+"%' and reservations.date =to_date('"+request.params.selectedDate+"', 'DD/MM/YYYY')";
         client.query(query, function (err, result) {
             done();
             if (err) {
@@ -302,6 +302,28 @@ app.get('/api/reservations/:name/:selectedDate', function (request, response) {
             }
             response.json(result.rows);
             console.log("--------- reservationsByName----------"+result.rows);
+        });
+
+    });
+});
+
+app.delete('/api/reservations/:id', function (request, response) {
+    pg.connect(conString, function (err, client, done) {
+        if (err) {
+            return console.error('error fetching client from pool', err);
+        }
+
+        console.log(request.params.reservationid);
+        
+        var query= "UPDATE reservations SET isdeleted=TRUE WHERE reservationid="+request.params.id+";"+
+                    " DELETE FROM reservationstables WHERE reservationsid="+request.params.id+";";
+        client.query(query, function (err, result) {
+            done();
+            if (err) {
+                response.status(500).send('error deleting reservation from db: '+err);
+                return console.error('error running query', err);
+            }
+            response.json("deleted reservation with reservation id "+request.params.id);
         });
 
     });

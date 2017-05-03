@@ -293,6 +293,7 @@
     <Content Include="scripts\libs\bootstrap\package.json" />
     <Content Include="scripts\libs\bootstrap\README.md" />
     <Content Include="scripts\libs\jquery\src\jquery-clockpicker.min.js" />
+    <Content Include="scripts\libs\my-modal\my-modal.js" />
     <Content Include="scripts\src\angularRoutes.js" />
     <Content Include="scripts\src\controllers\allReservationsController.js" />
     <Content Include="scripts\src\controllers\editMapController.js" />
@@ -301,6 +302,7 @@
     <Content Include="scripts\src\controllers\reservationController.js" />
     <Content Include="scripts\src\directives\myDraggableDirective.js" />
     <Content Include="scripts\src\directives\reservationDirective.js" />
+    <Content Include="scripts\src\directives\reservationsListDirective.js" />
     <Content Include="scripts\src\directives\setTableDirective.js" />
     <Content Include="scripts\src\directives\styleTableDirective.js" />
     <Content Include="scripts\src\directives\tableDirective.js" />
@@ -314,6 +316,7 @@
     <Content Include="scripts\src\views\mapView.html" />
     <Content Include="scripts\src\views\reservation.html" />
     <Content Include="scripts\src\views\reservationItem.html" />
+    <Content Include="scripts\src\views\reservationsOfTable.html" />
     <Folder Include="images\" />
     <Content Include="merges\android\scripts\android2.3-jscompat.js" />
     <Content Include="merges\android\scripts\platformOverrides.js" />

@@ -1,8 +1,9 @@
 ﻿angular.module('hostess.controllers')
-    .controller('reservationController', ['$scope', '$routeParams', 'tableId', '$uibModalInstance', '$rootScope', 'mapIndex',
-    function ($scope, $routeParams, tableId, $uibModalInstance, $rootScope, mapIndex) {
+    .controller('reservationController', ['$scope', '$routeParams', '$uibModalInstance', '$rootScope', 'table', 'reservationFactory',
+    function ($scope, $routeParams, $uibModalInstance, $rootScope, table, reservationFactory) {
      
         $scope.reservationList = [];
+
         $(document).ready(function () {
             // $('.clockpicker').clockpicker();
             var input = $('.clockpicker');
@@ -10,59 +11,55 @@
                 autoclose: true
             });
         });
+        getAllReservations(table);
 
-        $scope.handleHourFormat = function (reservationList) {
-            for (var i = 0; i < reservationList.length; i++) {
-                if (reservationList[i].starthour != "" && reservationList[i].starthour != null) {
-                    reservationList[i].starthour = reservationList[i].starthour.substring(0, reservationList[i].starthour.lastIndexOf(":"));
-                }
-                if (reservationList[i].endhour != "" && reservationList[i].endhour != null) {
-                        reservationList[i].endhour = reservationList[i].endhour.substring(0, reservationList[i].endhour.lastIndexOf(":"));
-                }
-            }
-            return reservationList;//take this out. as long as this object is not a primitive there is no need to return
-        };
+        
 
-        $scope.getAllReservations=function()
+        function getAllReservations(tableObj)// extract reservations by table from reservationsList in order to show them in modal
         {
-            var currentMap = mapIndex;
-            var tableCounter = $rootScope.mapsData[currentMap].tables.length;//go over all maps - need change
-            for (var i = 0; i < tableCounter;i++)
-            {
-                if ($rootScope.mapsData[currentMap].tables[i].tableid == tableId) {
-                    if (typeof ($rootScope.mapsData[currentMap].tables[i].reservations) != 'undefined' && $rootScope.mapsData[currentMap].tables[i].reservations.length >0) {
-                        for (var j = 0; j < $rootScope.mapsData[currentMap].tables[i].reservations.length; j++) {
-                            $scope.reservationList.push(angular.copy($rootScope.mapsData[currentMap].tables[i].reservations[j]));
-                        }
-                        $scope.reservationList.sort(compareByStartHour);
-                        $scope.reservationList = $scope.handleHourFormat($scope.reservationList);
-                    }
-                    break;
-                }
-            }
+            $scope.reservationList = tableObj.reservations;//it's important that both scope variables point to the same array object in memory
+            $scope.reservationList.sort(compareByStartHour);
         }
 
-        $scope.addReservations= function()
-        { //Need to be fixed if we want to use it
+        $scope.RemoveReservation = function(res){
+            //first need to remove from db
+            reservationFactory.deleteReservation(res.reservationid).then(function (result) {
+                console.log("in angular: " + result);
+                //remove from angular's scope mapsData
+                angular.forEach($rootScope.mapsData, function (map) {
+                    angular.forEach(map.tables, function (table) {
+                        var counter = table.reservations.length;
+                        for (var i = 0; i < counter; i++) {
+                            if (table.reservations[i].reservationid == res.reservationid) {
+                                table.reservations.splice(i, 1);//IMPORTANT splice alters the original array so we don't lose the reference
+                            }
+                        }
+                    });
+                });
+            }, function (error) {
+                console.log(error);
+            });
+        };
+
+        $scope.addReservations = function () { //Needs to be fixed if we want to use it
             var reservation = {
                 reservationId: "",
                 name: "",
-                guestcount:"",
-                date:"",
-                hour:"",
-                notes:"",
+                guestcount: "",
+                date: "",
+                hour: "",
+                notes: "",
                 phone: "",
-                mode:'edit'
+                mode: 'edit'
             };
-            if (typeof($scope.reservationList) == 'undefined') {
+            if (typeof ($scope.reservationList) == 'undefined') {
                 $scope.reservationList = [];
                 $scope.reservationList[0] = reservation;
             }
             else
                 $scope.reservationList.push(reservation);
-        }
+        };
 
-        $scope.getAllReservations();
         $scope.saveReservations = function () {
 
         };
@@ -71,17 +68,14 @@
             $uibModalInstance.dismiss('cancel');
         };
 
-      
+        function compareByStartHour(a, b) {
+            if (a.starthour < b.starthour)
+                return -1;
+            else if (a.starthour > b.starthour)
+                return 1;
+            else
+                return 0;
+        }
 
     }]);
-
-    function compareByStartHour(a, b) {
-        if (a.starthour < b.starthour)
-            return -1;
-        else if (a.starthour > b.starthour)
-            return 1;
-        else
-            return 0;
-    }
-
     

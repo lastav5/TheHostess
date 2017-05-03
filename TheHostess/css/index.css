@@ -18,7 +18,7 @@ and (max-device-width : 480px) {
 }*/
 
 @media only screen 
-and (max-device-width : 40em) {
+and (max-device-width : 480px) {/*prev was 40em*/
     body {
         margin:0;
         padding:0;
@@ -32,14 +32,18 @@ and (max-device-width : 40em) {
     }
 }
 @media only screen 
-and (min-device-width : 40em) {
+and (min-device-width : 480px) {
     body {
         margin:0;
         padding:0;
         font-size: 100%;
-        background-color:gray;
-        height:100%;
+        background-color:azure;
+        /*height:100%;*/
         /*padding-top: 70px;*/
+    }
+    @viewport {
+    width: 100px;
+    height: 60px;
     }
      .modalReservation
     {
@@ -58,6 +62,10 @@ and (min-device-width : 40em) {
 
 .editNavbar-item{
     font-size:4em;
+}
+.viewsContainer{
+    height:120vw;
+    width:100vw;
 }
 .angularCarousel{
 

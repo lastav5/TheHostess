@@ -7,13 +7,16 @@ angular.module('hostess.controllers')
         $scope.carouseldetails = {};
         $scope.carouseldetails.islocked = false;
         $scope.showAddReservationDiv = false;
+        //initialization to list view
         $scope.viewStyleSelected = 1;
+        //Modal's variables initializtion
+        $scope.showTableResModal = false;
+        //Main reservation bar initialization
         $scope.reservation = {};
         $scope.reservation.alldayres = true;
         var today = new Date();
         var output = (today.getDate() < 10 ? '0' : '') + today.getDate() + '/' +
             ((today.getMonth() + 1) < 10 ? '0' : '') + (today.getMonth() + 1) + '/' + today.getFullYear();
-
         $scope.selectedDate = output;
         var dateSelected = $scope.selectedDate;
         $rootScope.mapsData = [{}];
@@ -30,10 +33,10 @@ angular.module('hostess.controllers')
         {
             var _today = new Date();
             var d = new Date();
-            d.setDate(_today.getDate() + i)
+            d.setDate(_today.getDate() + i);
             $scope.nextWeek[i] = {};
             $scope.nextWeek[i].date = d;
-            switch ($scope.nextWeek[i].date.getDay())
+            switch ($scope.nextWeek[i].date.getDay())//is switch and for really necessary?
             {
                 case 0: $scope.nextWeek[i].dayOfWeek = "א"; break;
                 case 1: $scope.nextWeek[i].dayOfWeek = "ב"; break;
@@ -80,30 +83,32 @@ angular.module('hostess.controllers')
             //$scope.SetDisablity();//can get rid of this?
         };
 
-        $scope.openReservation = function (tableId) {
-            if ($scope.showAddReservationDiv) {
+        $scope.openReservationsListOfTable = function (table) {
+            if ($scope.showAddReservationDiv) {//put this in seperate function and then change the ng-click to exec each by condition
                 if (($scope.reservation.starthour == "" || $scope.reservation.starthour == null) &&
                     ($scope.reservation.endhour == "" || $scope.reservation.endhour == null) && $scope.reservation.alldayres == false) {
                     alert("לא ניתן לשבץ שולחן לפני בחירת שעה או הזמנה של כל היום");
                     return;
                 }
             
-                if ($scope.reservation.tablenumbers.search(tableId) == -1)
-                    $scope.reservation.tablenumbers += tableId + ".";
+                if ($scope.reservation.tablenumbers.search(table.tableid) == -1)
+                    $scope.reservation.tablenumbers += table.tableid + ".";
            
                 else
-                    $scope.reservation.tablenumbers = $scope.reservation.tablenumbers.replace(tableId + ".", "");
+                    $scope.reservation.tablenumbers = $scope.reservation.tablenumbers.replace(table.tableid + ".", "");
             }
             else {
-                var modalInstance = $uibModal.open({
-                    templateUrl: 'scripts/src/views/reservation.html',
-                    controller: 'reservationController',
-                    resolve: {
-                        tableId: tableId,
-                        mapIndex: $scope.carouselIndex
-                    }
+                $scope.reservationList = table.reservations;//it's important that both scope variables point to the same array object in memory
+                $scope.reservationList.sort(compareByStartHour);
+                $scope.showTableResModal = true;
+                //var modalInstance = $uibModal.open({
+                //    templateUrl: 'scripts/src/views/reservationsOfTable.html',
+                //    controller: 'reservationController',
+                //    resolve: {
+                //        table: table,
+                //    }
 
-                });
+                //});
             }
         };
 
@@ -171,7 +176,7 @@ angular.module('hostess.controllers')
             
             var tablesCounter = 0;
             if (typeof($scope.mapsData[$scope.carouselIndex].tables)!= 'undefined') // needs to affect all maps. not just current index
-                $scope.mapsData[$scope.carouselIndex].tables.length;
+                tablesCounter = $scope.mapsData[$scope.carouselIndex].tables.length;
             for (var i = 0; i < tablesCounter; i++)
             { 
                 if ($scope.showAddReservationDiv == false) {
@@ -194,7 +199,7 @@ angular.module('hostess.controllers')
                                 hoursOverlapp = true;
                             }
                             else
-                                hoursOverlapp = $scope.CheckHoursOverlapp($scope.reservation.starthour, $scope.reservation.endhour, $scope.mapsData[$scope.carouselIndex].tables[i].reservations[j].starthour, $scope.mapsData[$scope.carouselIndex].tables[i].reservations[j].endhour);
+                                hoursOverlapp = CheckHoursOverlapp($scope.reservation.starthour, $scope.reservation.endhour, $scope.mapsData[$scope.carouselIndex].tables[i].reservations[j].starthour, $scope.mapsData[$scope.carouselIndex].tables[i].reservations[j].endhour);
 
                             if (hoursOverlapp == true) {
                                 $scope.mapsData[$scope.carouselIndex].tables[i].isDisabled = true;
@@ -209,9 +214,8 @@ angular.module('hostess.controllers')
             }
         };
         
-        $scope.isTableDisabled = function(table)
-        {//is table.isDisabled important for database? can be emitted?
-            
+        $scope.isTableDisabled = function (table) {//is table.isDisabled important for database? can be emitted?
+
             var reservationsCounter = table.reservations.length;
             if ($scope.reservation.alldayres == true) {
                 table.isDisabled = reservationsCounter > 0;
@@ -225,12 +229,11 @@ angular.module('hostess.controllers')
                         hoursOverlapp = true;
                     }
                     else
-                        hoursOverlapp = $scope.CheckHoursOverlapp($scope.reservation.starthour, $scope.reservation.endhour, table.reservations[j].starthour, table.reservations[j].endhour);
+                        hoursOverlapp = CheckHoursOverlapp($scope.reservation.starthour, $scope.reservation.endhour, table.reservations[j].starthour, table.reservations[j].endhour);
 
                     if (hoursOverlapp == true) {
                         table.isDisabled = true;//might cause problems with triggering digest
                         return true;
-                        break;
                     }
                     else {
                         table.isDisabled = false;//might cause problems with triggering digest
@@ -238,14 +241,6 @@ angular.module('hostess.controllers')
                     }
                 }
             }
-        }
-
-        $scope.CheckHoursOverlapp = function (currentStartHour,currentEndHour, existsStartHour,existsEndHour) { //make this a static function and not on scope
-            if ((currentStartHour >= existsStartHour && currentStartHour < existsEndHour) || (currentEndHour > existsStartHour && currentEndHour < existsEndHour)
-                || currentStartHour < existsStartHour && currentEndHour > existsEndHour)
-                return true;
-            else
-                return false;
         };
 
         $scope.validation = function (reservation) {
@@ -327,23 +322,26 @@ angular.module('hostess.controllers')
         };
 
         function getAllDataByDate(selectedDate) {//gets all data and puts it in respective scopes. returns mapsfactory's promise.
-            //var defer2 = $q.defer();
             return mapsFactory.getMapsData(selectedDate).then(function (result) {
                 $rootScope.mapsData = result;
-                //alert(JSON.stringify($rootScope.mapsData));
                 var allReservationsData = reservationFactory.getCurrentReservationsData();//returns an OBJECT
-                handleHourFormat(allReservationsData['reservations']);//also need to sort ? $scope.allReservationList.sort(compareByStartHour);
-                handleHourFormat(allReservationsData['reservationsWithoutTable']);
-                $rootScope.allReservationList = allReservationsData['reservations'];
-                $rootScope.reservationsNoTable = allReservationsData['reservationsWithoutTable'];
+                handleHourFormat(allReservationsData.reservations);//also need to sort ? $scope.allReservationList.sort(compareByStartHour);
+                handleHourFormat(allReservationsData.reservationsWithoutTable);
+                $rootScope.allReservationList = allReservationsData.reservations;
+                $rootScope.reservationsNoTable = allReservationsData.reservationsWithoutTable;
                 return result;
-                //defer2.resolve(result);
             }, function (error) {
                 alert(JSON.stringify(error));
-                //defer2.reject(error);
             });
-            //return defer2.promise;//replace with $q.when?
         }
+
+        function CheckHoursOverlapp(currentStartHour, currentEndHour, existsStartHour, existsEndHour) { //make this a static function and not on scope
+            if ((currentStartHour >= existsStartHour && currentStartHour < existsEndHour) || (currentEndHour > existsStartHour && currentEndHour < existsEndHour)
+                || currentStartHour < existsStartHour && currentEndHour > existsEndHour)
+                return true;
+            else
+                return false;
+        };
 
         function handleHourFormat(reservationList) {
             for (var i = 0; i < reservationList.length; i++) {
