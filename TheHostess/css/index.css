@@ -23,7 +23,7 @@ and (max-device-width : 480px) {/*prev was 40em*/
         margin:0;
         padding:0;
         font-size: 50%;
-        background-color:gray;
+        background-color:#6699CC;
         height:100%;
     }
     .modalReservation
@@ -37,13 +37,9 @@ and (min-device-width : 480px) {
         margin:0;
         padding:0;
         font-size: 100%;
-        background-color:azure;
+        background-color:#6699CC;
         /*height:100%;*/
         /*padding-top: 70px;*/
-    }
-    @viewport {
-    width: 100px;
-    height: 60px;
     }
      .modalReservation
     {
@@ -321,17 +317,18 @@ and (min-device-width : 480px) {
 }
 
 .tab {
+  display:block;
   height: 30px;
   width: 60px;
-  background-color: white;
-  border-color:black;
-  border-width: 1px;
-  border-style: solid solid none solid;
+  border-radius: 20%;
+  color:#AAB6A2;
+  background-color: lightgray;
   text-align:center;
+  text-decoration:none;
+  line-height:30px;
   float:right;
 }
 
-.tabSelected{
-  background-color: transparent;
-  border-width: 0px;
+.tabSelected, .tab :hover {
+  background-color: #003366;
 }

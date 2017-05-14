@@ -1,3 +1,10 @@
+  var  fs = require('fs');
+  var angularConfig = require('./config/angularConfig.js');
+  function makeJson (env, filePath) {
+    console.log('in makejson');
+    fs.writeFileSync(filePath,JSON.stringify(env));
+  };
+
 module.exports = function(grunt) {
 
   // ===========================================================================
@@ -74,7 +81,22 @@ module.exports = function(grunt) {
         logConcurrentOutput: true
       },
       tasks: ['nodemon', 'watch']
-    }   
+    },
+
+    ngconstant: {
+      options: {
+        name: 'envConfig',
+        dest: 'TheHostess/scripts/src/envConfig.js',
+      },
+      dist:{
+        constants: function() {
+          makeJson(angularConfig.angularConfig,'./config/angularConfigJSON.json');
+          return {
+            nodeConst: grunt.file.readJSON('./config/angularConfigJSON.json')
+          };
+        }
+      }
+    }
 
   });
 
@@ -85,6 +107,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
+  grunt.loadNpmTasks('grunt-ng-constant');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-nodemon');
   grunt.loadNpmTasks('grunt-concurrent');
@@ -92,6 +115,6 @@ module.exports = function(grunt) {
   // ===========================================================================
   // CREATE TASKS ==============================================================
   // ===========================================================================
-  grunt.registerTask('default', ['jshint', 'uglify', 'cssmin','nodemon','concurrent']);
+  grunt.registerTask('default', ['jshint', 'uglify', 'cssmin', 'ngconstant', 'nodemon','concurrent']);
 
 };

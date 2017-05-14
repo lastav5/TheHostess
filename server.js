@@ -35,7 +35,7 @@ require('./app/routes')(app); // pass our application into our routes -- must
 app.use('/api', router);//put this line beofre passing app to routes.js for it to take effect.
 
 var port = process.env.PORT || 4407;
-//var port = 4407;
+
 app.listen(port, function() {
   console.log("Listening on " + port);
 });

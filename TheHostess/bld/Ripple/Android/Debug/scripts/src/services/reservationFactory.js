@@ -1,7 +1,7 @@
 ﻿angular.module('thehostess.services')
-    .factory('reservationFactory', function ($resource, $q) {
+    .factory('reservationFactory', function (nodeConst,$resource, $q) {
 
-        var reservationResource = $resource("http://localhost:4407/api/reservations/:action/:id:date/", { action: "@action" ,id: "@id", date:"@date" },
+        var reservationResource = $resource(nodeConst.apiUrl+"/api/reservations/:action/:id:date/", { action: "@action" ,id: "@id", date:"@date" },
             {
                 'save': { method: 'POST', isArray: true },
                 'get': { method: 'GET', isArray: false },

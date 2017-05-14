@@ -1,4 +1,4 @@
-﻿angular.module('hostess.controllers', ['ui.bootstrap', 'ngAnimate'])
+﻿angular.module('hostess.controllers')
     .controller('editMapController', ['$scope', '$routeParams','mapsFactory',
     function ($scope, $routeParams, mapsFactory) {
 

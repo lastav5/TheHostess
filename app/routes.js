@@ -1,8 +1,8 @@
 //'use strict';
 
 var pg = require('pg');
-var db = require('../config/database');
-var conString = db.url;
+var db = require('../config/config.js');
+var conString = db.conString;
 
 module.exports = function(app) {
 
@@ -20,7 +20,6 @@ app.post('/api/tables',function(request,response){
       if(err) {
         return console.error('error fetching client from pool', err);
       }
-      console.log("heY");
       console.log(request.body);//undefined
       
       client.query("insert into tables (mapid,posx,posy,width,height,tablenumber,occupied,shape) values("+ request.body.mapid+","+request.body.posx+","+request.body.posy+","+request.body.width+","+request.body.height+","+request.body.tablenumber+","+request.body.occupied+",'"+request.body.shape+"') RETURNING *", function(err, result) {//'+request.params.mapId+'

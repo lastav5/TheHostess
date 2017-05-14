@@ -1,6 +1,8 @@
 ﻿
-var app = angular.module('HostessApp', ['ngRoute', 'angular-carousel', 'thehostess.services', 'hostess.controllers', 'hostess.directives', 'ui.bootstrap', 'ngAnimate','mymodal']);
+var app = angular.module('HostessApp', ['ngRoute', 'angular-carousel', 'thehostess.services', 'hostess.controllers', 'hostess.directives','envConfig', 'ui.bootstrap', 'ngAnimate','mymodal']);
 angular.module('thehostess.services', ['ngResource']);
+angular.module('hostess.controllers', ['ui.bootstrap', 'ngAnimate']);
+angular.module('hostess.directives', []);
 
 app.run(function ($rootScope) {
     //$rootScope.mapsData = null;

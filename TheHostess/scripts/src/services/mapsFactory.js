@@ -1,9 +1,8 @@
 ﻿angular.module('thehostess.services')
-    .factory('mapsFactory',function (reservationFactory, $resource, $q) {
+    .factory('mapsFactory',function (reservationFactory,nodeConst, $resource, $q) {
         var mapsData;
         
-        //var mapsResource = $resource("http://thehostess.herokuapp.com/api/maps/:id", { id: "@map_id" },{} );
-        var mapsResource = $resource("http://localhost:4407/api/maps/:selectedDate", { selectedDate: "@selectedDate" },
+        var mapsResource = $resource(nodeConst.apiUrl+"/api/maps/:selectedDate", { selectedDate: "@selectedDate" },
             { 'saveAll': { method: 'PUT', isArray: true } });
         return {
             saveMapsData: function (mapsData) {

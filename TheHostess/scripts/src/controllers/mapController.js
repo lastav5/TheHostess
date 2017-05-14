@@ -101,14 +101,6 @@ angular.module('hostess.controllers')
                 $scope.reservationList = table.reservations;//it's important that both scope variables point to the same array object in memory
                 $scope.reservationList.sort(compareByStartHour);
                 $scope.showTableResModal = true;
-                //var modalInstance = $uibModal.open({
-                //    templateUrl: 'scripts/src/views/reservationsOfTable.html',
-                //    controller: 'reservationController',
-                //    resolve: {
-                //        table: table,
-                //    }
-
-                //});
             }
         };
 
@@ -264,12 +256,6 @@ angular.module('hostess.controllers')
                 $scope.reservation.alldayres = false;
         });
 
-        $scope.openAllReservations = function () {
-            var modalInstance = $uibModal.open({
-                templateUrl: 'scripts/src/views/allReservations.html',
-                controller: 'allReservationsController'
-            });
-        };
      
         $scope.resetReservation = function () {
             $scope.reservation.starthour = null;
@@ -294,7 +280,7 @@ angular.module('hostess.controllers')
         };
 
         $scope.SearchReservation = function () {
-            alert("in serachReservation");
+            
             $scope.ClearAllHighlightTables();
             if ($scope.nameToSearch.length < 2)
                 return;

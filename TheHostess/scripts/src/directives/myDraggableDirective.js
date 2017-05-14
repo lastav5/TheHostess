@@ -1,4 +1,4 @@
-﻿angular.module('hostess.directives', [])
+﻿angular.module('hostess.directives')
     .directive('myDraggable', ['$document',function ($document) {
         return {
             restrict: "A",
