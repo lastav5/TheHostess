@@ -116,5 +116,6 @@ module.exports = function(grunt) {
   // CREATE TASKS ==============================================================
   // ===========================================================================
   grunt.registerTask('default', ['jshint', 'uglify', 'cssmin', 'ngconstant', 'nodemon','concurrent']);
+  grunt.registerTask('heroku', ['ngconstant']);
 
 };

@@ -3,19 +3,19 @@
   "version": "0.1.0",
   "main": "server.js",
   "devDependencies": {
-    "grunt": "*",
-    "grunt-concurrent": "*",
-    "grunt-contrib-cssmin": "*",
-    "grunt-contrib-jshint": "*",
-    "grunt-contrib-less": "*",
-    "grunt-contrib-uglify": "*",
-    "grunt-contrib-watch": "*",
+    "grunt-concurrent": "2.3.1",
+    "grunt-contrib-cssmin": "1.0.2",
+    "grunt-contrib-jshint": "1.1.0",
+    "grunt-contrib-less": "1.4.0",
+    "grunt-contrib-uglify": "2.0.0",
+    "grunt-contrib-watch": "1.0.0",
     "grunt-nodemon": "^0.4.2",
     "jshint-stylish": "1.0.0"
   },
   "dependencies": {
     "body-parser": "1.9.0",
     "express": "4.9.7",
+    "grunt": "1.0.1",
     "grunt-ng-constant": "^2.0.1",
     "method-override": "2.2.0",
     "pg": "6.1.0"
@@ -23,5 +23,8 @@
   "engines": {
     "node": "0.10.32",
     "npm": "1.4.28"
+  },
+  "scripts": {
+    "postinstall": "grunt heroku"
   }
 }
