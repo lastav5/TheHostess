@@ -7,10 +7,10 @@ However for it to be simulated properly it has to be viewed in the ripple emulat
 Can also be viewed working partially by opening the developer toolbar(f12) and clicking on the "toggle device toolbar" icon (and clicking on the date bar in the app to rerender the tables).  
 
 Some features don't work yet and some need to be updated and caught up to the latest changes in code. 
-For now it is best to view the tables - change the date in the date bar (november 17 has reservations saved on it), click on a table to view the reservations assigned to it.  
+For now it is best to view the tables - change the date in the date bar, click on a table to view the reservations assigned to it. 
 Tables can have multiple reservations and reservations can have multiple tables.  
 <br /><br />
-<img src="appImage1.png"><img src="appImage2.png">
+<img height="200px" src="appImage1.png"><img height="200px" src="appImage2.png">
 
 <br /><br /><br />
 Features to be updated to work with latest changes:<br />
