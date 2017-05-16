@@ -17,6 +17,7 @@ angular.module('hostess.controllers')
         var today = new Date();
         var output = (today.getDate() < 10 ? '0' : '') + today.getDate() + '/' +
             ((today.getMonth() + 1) < 10 ? '0' : '') + (today.getMonth() + 1) + '/' + today.getFullYear();
+        output = "17/11/2016";
         $scope.selectedDate = output;
         var dateSelected = $scope.selectedDate;
         $rootScope.mapsData = [{}];
@@ -317,7 +318,7 @@ angular.module('hostess.controllers')
                 $rootScope.reservationsNoTable = allReservationsData.reservationsWithoutTable;
                 return result;
             }, function (error) {
-                alert(JSON.stringify(error));
+                console.log(error);
             });
         }
 

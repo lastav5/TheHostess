@@ -10,7 +10,7 @@
                 {
 
                 }, function (error) {
-                    alert("Error on save maps");
+                    console.log("Error on save maps");
                 });
                 
             },
@@ -24,7 +24,7 @@
                             defer.reject(error);
                     });
                 }, function (error) {
-                    alert("error in factory");
+                    console.log("error in mapsFactory: " + error);
                         defer.reject(error);
                     });
                 return defer.promise;

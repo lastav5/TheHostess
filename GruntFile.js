@@ -1,4 +1,5 @@
   var  fs = require('fs');
+  var config = require('./config/config.js');
   var angularConfig = require('./config/angularConfig.js');
   function makeJson (env, filePath) {
     console.log('in makejson');
@@ -103,15 +104,16 @@ module.exports = function(grunt) {
   // ===========================================================================
   // LOAD GRUNT PLUGINS ========================================================
   // ===========================================================================
-  grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-less');
-  grunt.loadNpmTasks('grunt-contrib-cssmin');
+  if(config.env == 'development'){
+    grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-less');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
+    grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-nodemon');
+    grunt.loadNpmTasks('grunt-concurrent');
+  }
   grunt.loadNpmTasks('grunt-ng-constant');
-  grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-nodemon');
-  grunt.loadNpmTasks('grunt-concurrent');
-
   // ===========================================================================
   // CREATE TASKS ==============================================================
   // ===========================================================================
