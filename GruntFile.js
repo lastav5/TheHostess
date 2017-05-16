@@ -20,7 +20,7 @@ module.exports = function(grunt) {
     // configure jshint to validate js files -----------------------------------
     jshint: {
       options: {
-        reporter: require('jshint-stylish')
+        /*reporter: require('jshint-stylish')*/
       },
       all: ['GruntFile.js', 'TheHostess/scripts/src/**/*.js']
     },
