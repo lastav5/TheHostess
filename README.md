@@ -2,13 +2,12 @@
 <br />
 <p style="font-size:16px">Work In Progress</p>  
 <p>
-Can view the app <a href="http://thehostess.herokuapp.com">here</a>.  
-However for it to be simulated properly it has to be viewed in the ripple emulator chrome plugin (right click on screen and choose emulator>enable.)  
-Can also be viewed working partially by opening the developer toolbar(f12) and clicking on the "toggle device toolbar" icon (and clicking on the date bar in the app to rerender the tables).  
+Can view the app <a href="http://thehostess.herokuapp.com" onclick="window.open(this.href,'win',
+'toolbars=0, width=400,height=711,left=200,top=30,status=0,menubar=0,scrollbars=1,resizable=1');">here</a>.  
 
-Some features don't work yet and some need to be updated and caught up to the latest changes in code. 
-For now it is best to view the tables - change the date in the date bar, click on a table to view the reservations assigned to it. 
-Tables can have multiple reservations and reservations can have multiple tables.  
+Some features don't fully work yet and some need to be updated and caught up to the latest changes in code. 
+Change the date in the date bar, click on a table to view the reservations assigned to it and serach for any reservation data in the search box.  
+Tables can have multiple reservations and reservations can have multiple tables. For each table and reservation there is a single object in memory to which all other references to this table or reservation point. This results in all data being synchronized automatically.   
 <br /><br />
 <img height="500px" src="appImage1.png"><img height="500px" src="appImage2.png">
 
