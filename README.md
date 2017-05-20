@@ -2,7 +2,7 @@
 <br />
 <p style="font-size:16px">Work In Progress</p>  
 <p>
-Can view the app <a href="openAppInNewWin.html">here</a>.   
+Can view the app <a href="http://thehostess.herokuapp.com/openAppInNewWin.html">here</a>.   
 
 Some features don't fully work yet and some need to be updated and caught up to the latest changes in code. 
 Change the date in the date bar, click on a table to view the reservations assigned to it and serach for any reservation data in the search box.  
